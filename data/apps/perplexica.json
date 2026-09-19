@@ -1,0 +1,30 @@
+{
+  "name": "Perplexica",
+  "tagline": "Open-source AI answer engine and search assistant with citations",
+  "description": "An open-source, self-hosted AI search engine alternative to Perplexity. Connects to SearXNG and local or cloud LLMs to fetch real-time web results, synthesize answers, and cite sources in clean markdown cards.\n\nVibecoded with Cursor and Claude to build a local-first conversational research assistant that respects user privacy.",
+  "url": "https://github.com/ItzCrazyKns/Perplexica",
+  "repo": "https://github.com/ItzCrazyKns/Perplexica",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Perplexity",
+      "kind": "alternative",
+      "note": "Conversational search with real-time web citations without a $20/month Perplexity Pro subscription."
+    }
+  ],
+  "tags": ["perplexity", "ai-search", "rag", "searxng", "llm"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js", "SearXNG", "TypeScript", "Tailwind CSS", "Ollama"],
+  "maker": {
+    "name": "Nabil Baig",
+    "handle": "ItzCrazyKns",
+    "url": "https://github.com/ItzCrazyKns",
+    "avatar": "https://github.com/ItzCrazyKns.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-04-20",
+  "stars": 21500,
+  "featured": true,
+  "placeholder": false
+}

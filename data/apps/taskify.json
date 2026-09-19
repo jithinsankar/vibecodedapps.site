@@ -1,0 +1,35 @@
+{
+  "name": "Taskify",
+  "tagline": "Kanban task management board with drag-and-drop lists and audit logs",
+  "description": "A clean Trello and Jira alternative featuring drag-and-drop card reordering, organization boards, Unsplash cover integration, activity audit logs, and Stripe subscription tiers.\n\nVibecoded with Next.js Server Actions and Prisma in a weekend experiment. Proved that full enterprise board mechanics don't require heavy single-page app frameworks.",
+  "url": "https://taskify-trello.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/next13-trello-clone",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Trello",
+      "kind": "clone",
+      "note": "Visual drag-and-drop boards and list reordering with zero seat restrictions."
+    },
+    {
+      "product": "Jira",
+      "kind": "alternative",
+      "note": "Simple drag-and-drop boards without five configuration screens per ticket."
+    }
+  ],
+  "tags": ["jira", "trello", "kanban", "task-management", "drag-and-drop"],
+  "builtWith": ["Cursor", "v0"],
+  "stack": ["Next.js 14", "Server Actions", "Prisma", "MySQL", "Tailwind CSS"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-09-11",
+  "stars": 1720,
+  "featured": false,
+  "placeholder": false
+}

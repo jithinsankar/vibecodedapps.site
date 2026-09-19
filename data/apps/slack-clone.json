@@ -1,0 +1,30 @@
+{
+  "name": "TeamPulse",
+  "tagline": "Channel-based team messaging with threads, reactions, and direct voice calls",
+  "description": "A modern Slack clone offering threaded messaging, channel management, member permissions, real-time message editing, file attachments, and 1-on-1 direct conversations.\n\nPrompt-engineered and vibecoded in a 48-hour session using Cursor with Convex handling instant sync and optimistic UI updates without any REST polling.",
+  "url": "https://slack-clone-convex.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/slack-clone-tutorial",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Slack",
+      "kind": "clone",
+      "note": "Replaces Slack's 90-day message history limit with unlimited self-hosted logs."
+    }
+  ],
+  "tags": ["slack", "team-chat", "messaging", "convex", "realtime"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js 14", "Convex", "Bun", "Tailwind CSS", "Lucide"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-10-15",
+  "stars": 1980,
+  "featured": true,
+  "placeholder": false
+}

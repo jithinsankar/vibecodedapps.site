@@ -1,0 +1,30 @@
+{
+  "name": "OpenFigma",
+  "tagline": "Real-time collaborative canvas with multiplayer cursors and vector tools",
+  "description": "A multiplayer design canvas inspired by Figma, complete with live cursor presence, reactions, sticky comments, and SVG vector drawing using Fabric.js and Liveblocks.\n\nCreated using Cursor and v0 to experiment with low-latency WebSockets and vector synchronization. The team was blown away by 60fps canvas performance in modern browsers.",
+  "url": "https://figma-clone-liveblocks.vercel.app",
+  "repo": "https://github.com/jsmastery-pro/figma",
+  "category": "Design",
+  "replaces": [
+    {
+      "product": "Figma",
+      "kind": "clone",
+      "note": "Multiplayer design canvas and vector manipulation with zero seat costs."
+    }
+  ],
+  "tags": ["figma", "canvas", "multiplayer", "liveblocks", "vector"],
+  "builtWith": ["Cursor", "v0"],
+  "stack": ["Next.js", "Fabric.js", "Liveblocks", "TypeScript", "Tailwind CSS"],
+  "maker": {
+    "name": "Adrian Hajdin",
+    "handle": "adrianhajdin",
+    "url": "https://github.com/adrianhajdin",
+    "avatar": "https://github.com/adrianhajdin.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-10-22",
+  "stars": 2310,
+  "featured": true,
+  "placeholder": false
+}

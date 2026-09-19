@@ -1,0 +1,152 @@
+---
+import { SITE } from '../config';
+import AdSlot from './AdSlot.astro';
+import Icon from './Icon.astro';
+
+const { categories = [] } = Astro.props as { categories?: Array<{ name: string; slug: string; count: number }> };
+const topCategories = categories.slice(0, 6);
+const year = new Date().getFullYear();
+
+const projectLinks = [
+  { href: SITE.repo, label: 'Source code', external: true },
+  { href: `${SITE.repo}/blob/main/CONTRIBUTING.md`, label: 'Contributing', external: true },
+  { href: '/submit', label: 'Submit an app' },
+  { href: '/about', label: 'About' },
+  { href: '/sponsor', label: 'Sponsorship' },
+  { href: '/rss.xml', label: 'RSS' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <AdSlot slot="footer" class="footer-ad" />
+
+    <div class="footer-grid">
+      <div class="footer-about">
+        <span class="eyebrow">About</span>
+        <p class="small muted">{SITE.description}</p>
+      </div>
+
+      <div>
+        <span class="eyebrow">Sections</span>
+        <ul class="footer-list">
+          {
+            topCategories.map((category) => (
+              <li>
+                <a href={`/category/${category.slug}`}>
+                  {category.name}
+                  <span class="muted numeric"> {category.count}</span>
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/clones">
+              All replacements <span class="muted numeric">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="eyebrow">Project</span>
+        <ul class="footer-list">
+          {
+            projectLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <p class="mono muted">
+        © {year} {SITE.name} · MIT
+      </p>
+      <p class="mono muted footer-base__note">
+        <Icon name="rss" size={12} />
+        <span>Community-submitted. Paid placements are labelled and time-boxed.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-block-start: 1px solid var(--ink);
+    padding-block: var(--s7) var(--s6);
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-ad {
+    margin-block-end: var(--s7);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--s7);
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-about p {
+    margin-block-start: var(--s3);
+    max-width: 44ch;
+  }
+
+  .footer-list {
+    list-style: none;
+    padding: 0;
+    margin-block-start: var(--s3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-list a {
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .footer-list a:hover {
+    color: var(--accent);
+  }
+
+  .footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s3);
+    align-items: center;
+    margin-block-start: var(--s7);
+    padding-block-start: var(--s4);
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .footer-base p {
+    font-size: var(--step--2);
+  }
+
+  .footer-base__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  @media (max-width: 780px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: var(--s6);
+    }
+  }
+</style>

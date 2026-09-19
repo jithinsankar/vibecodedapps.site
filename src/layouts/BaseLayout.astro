@@ -1,0 +1,152 @@
+---
+import { SITE } from '../config';
+import { getApps, categoriesWithCounts } from '../lib/apps';
+import { graph, organizationLd, websiteLd, xHandle, type JsonLd } from '../lib/seo';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+// Self-hosted typefaces: a high-contrast serif for display, a tight grotesk for
+// text, and a technical mono for metadata and labels.
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/wght-italic.css';
+import '@fontsource-variable/inter-tight';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative share image. */
+  image?: string;
+  /** Describes the share image, for screen readers and preview cards. */
+  imageAlt?: string;
+  /** Only meaningful alongside a share image of a known size. */
+  imageWidth?: number;
+  imageHeight?: number;
+  /** Hide from search engines (used for the 404 page). */
+  noindex?: boolean;
+  bodyClass?: string;
+  /** Extra schema.org nodes for this page, merged into the site graph. */
+  structuredData?: JsonLd[];
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image = '/og.png',
+  imageAlt,
+  imageWidth,
+  imageHeight,
+  noindex = false,
+  bodyClass = '',
+  structuredData = [],
+} = Astro.props;
+
+const pageTitle = title === SITE.title ? title : `${title} · ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(image, SITE.url).href;
+
+/*
+ * Image dimensions are asserted only when they are actually known. The bundled
+ * share card is 1200x630; a listing showing its own screenshot gets none,
+ * because a wrong width is worse than no width at all.
+ */
+const imageSize =
+  image === '/og.png'
+    ? { width: 1200, height: 630 }
+    : imageWidth && imageHeight
+      ? { width: imageWidth, height: imageHeight }
+      : null;
+
+const ogAlt = imageAlt ?? description;
+
+/*
+ * Organisation and site are emitted on every page rather than only the home
+ * page, so that the @id references the other nodes make always resolve inside
+ * the graph of the page they appear on.
+ */
+const jsonLd = graph(organizationLd(), websiteLd(), ...structuredData);
+
+const categories = categoriesWithCounts(await getApps());
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="robots"
+      content={noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1'}
+    />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name}: newest apps`} href="/rss.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={SITE.ogLocale} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogAlt} />
+    {imageSize && <meta property="og:image:width" content={String(imageSize.width)} />}
+    {imageSize && <meta property="og:image:height" content={String(imageSize.height)} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={xHandle()} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
+
+    {/* Set the theme before first paint so there is no flash. */}
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch {
+          /* ignore */
+        }
+      })();
+    </script>
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" class="page">
+      <slot />
+    </main>
+    <Footer categories={categories} />
+
+    <script>
+      // Prefetch on hover is handled by Astro's prefetch integration.
+      // This only keeps the theme in sync when the OS setting changes.
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      media.addEventListener('change', () => {
+        if (!document.documentElement.dataset.theme) {
+          document.dispatchEvent(new CustomEvent('themechange'));
+        }
+      });
+    </script>
+  </body>
+</html>

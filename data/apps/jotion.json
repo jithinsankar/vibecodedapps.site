@@ -1,0 +1,31 @@
+{
+  "name": "Jotion",
+  "tagline": "Connected workspace for wiki, docs, and notes with real-time sync",
+  "description": "A full-stack Notion clone built with Next.js 14 and Convex, featuring real-time document editing, nested page trees, cover photos, file uploads via EdgeStore, and instant publishing.\n\nVibecoded with Cursor and Claude to test how closely a solo developer could match Notion's core UX in a weekend sprint.",
+  "url": "https://notion-clone-lemon-ten.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/notion-clone-tutorial",
+  "icon": "https://raw.githubusercontent.com/AntonioErdeljac/notion-clone-tutorial/master/public/logo.svg",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Notion",
+      "kind": "clone",
+      "note": "Replicates Notion's nested document trees and block editor without the subscription."
+    }
+  ],
+  "tags": ["notion", "workspace", "notes", "convex", "realtime"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js 14", "React", "Convex", "Tailwind CSS", "Clerk"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-11-14",
+  "stars": 1840,
+  "featured": true,
+  "placeholder": false
+}

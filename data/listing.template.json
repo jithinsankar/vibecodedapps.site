@@ -1,0 +1,32 @@
+{
+  "name": "Your App",
+  "tagline": "One clear sentence about what it does, in sentence case",
+  "description": "A short paragraph about the app. Separate paragraphs with a blank line.\n\nMention what you built it with, what surprised you, and what is next.",
+  "url": "https://yourapp.com",
+  "repo": "https://github.com/you/yourapp",
+  "icon": "https://yourapp.com/icon.png",
+  "screenshots": ["https://yourapp.com/shot-1.png"],
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Notion",
+      "kind": "alternative",
+      "note": "Same docs and databases, but everything stays in plain files on disk."
+    }
+  ],
+  "tags": ["notes", "offline"],
+  "builtWith": ["Claude Code"],
+  "stack": ["Astro", "SQLite", "Cloudflare"],
+  "maker": {
+    "name": "Your Name",
+    "handle": "yourhandle",
+    "url": "https://github.com/yourhandle",
+    "avatar": "https://github.com/yourhandle.png"
+  },
+  "status": "live",
+  "pricing": "freemium",
+  "launchedAt": "2026-01-01",
+  "stars": 0,
+  "featured": false,
+  "placeholder": false
+}

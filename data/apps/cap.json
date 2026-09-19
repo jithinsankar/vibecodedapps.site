@@ -1,0 +1,30 @@
+{
+  "name": "Cap",
+  "tagline": "Open-source screen recording and instant shareable video links",
+  "description": "A modern open-source Loom alternative. Record your screen, microphone, and webcam with instantaneous link generation, shareable playback pages, and local editing.\n\nBuilt by Richard North using Next.js and Rust, accelerated with AI agent pair-programming to polish video chunk streaming and upload-while-recording.",
+  "url": "https://cap.so",
+  "repo": "https://github.com/CapSoftware/Cap",
+  "category": "Media",
+  "replaces": [
+    {
+      "product": "Loom",
+      "kind": "alternative",
+      "note": "Instant screen recordings and video shares without Loom's 5-minute limit or per-user monthly bills."
+    }
+  ],
+  "tags": ["loom", "screen-recording", "video", "webrtc", "open-source"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js", "Rust", "Tauri", "Tailwind CSS"],
+  "maker": {
+    "name": "Richard North",
+    "handle": "richardcap",
+    "url": "https://github.com/CapSoftware",
+    "avatar": "https://github.com/CapSoftware.png"
+  },
+  "status": "live",
+  "pricing": "freemium",
+  "launchedAt": "2025-06-12",
+  "stars": 9200,
+  "featured": true,
+  "placeholder": false
+}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Vibecoded">
+  <!--
+    The mark is the question, because that is the whole product: every page exists
+    to answer "is there a vibecoded clone of X?".
+
+    Drawn as vector geometry rather than set as text, so it does not depend on a
+    font being available in an icon context. Colours and radii come straight from
+    the design system: the accent colour for the field and the on-accent colour for
+    the mark, plus the 2px radius for the corners. No gradient and no pill corners,
+    which is what made the old one read as a generic generated app icon. Note that
+    XML forbids a double hyphen inside a comment, so token names are spelled out
+    here rather than written literally.
+  -->
+  <rect width="32" height="32" rx="2" fill="#cf3a11" />
+  <path
+    d="M10 12a6 6 0 0 1 12 0c0 3.6-6 4.4-6 8.4"
+    fill="none"
+    stroke="#fdf7f2"
+    stroke-width="3.4"
+    stroke-linecap="round"
+  />
+  <circle cx="16" cy="25.4" r="2.1" fill="#fdf7f2" />
+</svg>

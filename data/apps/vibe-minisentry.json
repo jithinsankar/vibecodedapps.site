@@ -1,0 +1,30 @@
+{
+  "name": "Vibe MiniSentry",
+  "tagline": "Lightweight error tracking and crash logging built with Claude Code",
+  "description": "A minimal, self-hostable Sentry-compatible event ingestion and crash logging server. Drops directly into existing Sentry SDKs to capture unhandled exceptions, stack traces, and environment tags.\n\nVibecoded end-to-end using Claude Code to show that teams don't need a multi-gigabyte Sentry cluster for simple crash alerting.",
+  "url": "https://github.com/acvnace/vibe-minisentry",
+  "repo": "https://github.com/acvnace/vibe-minisentry",
+  "category": "Developer Tools",
+  "replaces": [
+    {
+      "product": "Sentry",
+      "kind": "alternative",
+      "note": "Drops into Sentry client SDKs with zero configuration and zero per-event pricing."
+    }
+  ],
+  "tags": ["sentry", "error-tracking", "monitoring", "crash-reporting"],
+  "builtWith": ["Claude Code"],
+  "stack": ["Python", "FastAPI", "SQLite", "React"],
+  "maker": {
+    "name": "Ace",
+    "handle": "acvnace",
+    "url": "https://github.com/acvnace",
+    "avatar": "https://github.com/acvnace.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2026-02-15",
+  "stars": 340,
+  "featured": false,
+  "placeholder": false
+}

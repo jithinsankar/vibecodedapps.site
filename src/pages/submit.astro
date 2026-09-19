@@ -1,0 +1,497 @@
+---
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+import { CATEGORIES, PRICING, STATUSES, VIBE_TOOLS } from '../lib/listing-schema.mjs';
+import { PRODUCTS } from '../lib/products.mjs';
+import template from '../../data/listing.template.json';
+
+const templateJson = JSON.stringify(template, null, 2);
+const newFileUrl = `${SITE.repo}/new/main/data/apps?filename=my-app.json&value=${encodeURIComponent(templateJson)}`;
+const issueUrl = `${SITE.repo}/issues/new?template=submit-app.yml`;
+
+// Sent to the client so /submit?product=<slug> can name the product and prefill
+// the template with it. Keeps the "this gap needs filling" CTA honest.
+const productIndex = PRODUCTS.map((product) => ({ s: product.slug, n: product.name }));
+
+const required = ['name', 'tagline', 'url', 'replaces', 'category', 'builtWith', 'maker', 'launchedAt'];
+
+const fields = [
+  { name: 'name', note: '2 to 60 characters, written the way you write it' },
+  { name: 'tagline', note: 'One sentence, sentence case, no full stop' },
+  { name: 'url', note: 'Live product page. Must load without a login' },
+  {
+    name: 'replaces',
+    note: `What it stands in for: a product from data/products.json, a kind (clone, alternative, inspired-by) and optionally one line on what you do differently. The product must already be in the catalogue, and there are ${PRODUCTS.length} to choose from.`,
+  },
+  { name: 'category', note: `One of: ${CATEGORIES.join(', ')}` },
+  { name: 'builtWith', note: 'The AI tools you actually used, up to six' },
+  { name: 'maker', note: 'Your name, plus a handle and profile URL' },
+  { name: 'launchedAt', note: 'When it became publicly usable (YYYY-MM-DD)' },
+  { name: 'description', note: 'A paragraph or two, separated by a blank line' },
+  { name: 'repo', note: 'Required if pricing is open-source' },
+  { name: 'icon', note: 'Square image, 128px or larger' },
+  { name: 'screenshots', note: 'Up to four image URLs' },
+  { name: 'tags', note: 'Up to five, lowercase and hyphenated' },
+  { name: 'stack', note: 'Frameworks and services you shipped on' },
+  { name: 'pricing', note: `One of: ${PRICING.join(', ')}` },
+  { name: 'status', note: `One of: ${STATUSES.join(', ')}` },
+  { name: 'stars', note: 'Cached GitHub stars, refreshed on a schedule' },
+];
+
+const good = [
+  'It replaces something specific: a product in the catalogue, named in replaces.',
+  'You can say in one line what it does differently from that product.',
+  'It runs. A stranger can open the URL and use something.',
+  'AI tooling meaningfully shaped it, not just autocomplete.',
+];
+
+const bad = [
+  'A general-purpose tool with no incumbent to compare it against.',
+  'Landing pages with a waitlist and nothing behind them.',
+  'Affiliate farms, SEO doorways or scraped directories.',
+  'Anything you would not be happy to have a stranger review.',
+];
+---
+
+<BaseLayout
+  title="Submit an app"
+  description="Add your vibecoded app to the directory with a single pull request, or use the form and a maintainer will open it for you."
+>
+  <div
+    class="container container--narrow"
+    data-submit
+    data-template={templateJson}
+    data-repo={SITE.repo}
+  >
+    <!-- Filled in by the script when arriving from a "gap" page. -->
+    <p class="targeting" data-targeting hidden>
+      <span class="badge badge--outline-accent">Replacement</span>
+      <span data-targeting-text></span>
+    </p>
+
+    <header class="head">
+      <p class="eyebrow">Contribute</p>
+      <h1>Submit an app</h1>
+      <p class="lede">
+        The directory is a git repository. Every listing is one small JSON file, so adding an app is
+        a pull request: reviewable, versioned, reversible. The first question a reviewer asks is
+        simple: <strong>what does it replace?</strong> Answer that in the{' '}
+        <code>replaces</code> field and the rest is bookkeeping.
+      </p>
+    </header>
+
+    <div class="paths">
+      <div class="path path--primary">
+        <span class="eyebrow">Recommended</span>
+        <h2>Open the pull request yourself</h2>
+        <p class="small muted">
+          Creates <code>data/apps/my-app.json</code> pre-filled from the template. Rename the file to
+          your app’s slug, edit the values, propose the change.
+        </p>
+        <a class="btn" href={newFileUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="github" size={13} /> Add on GitHub
+        </a>
+        <p class="mono muted">npm run new my-app</p>
+      </div>
+
+      <div class="path">
+        <span class="eyebrow">No git required</span>
+        <h2>Use the submission form</h2>
+        <p class="small muted">
+          Fill in the fields and a maintainer turns it into a listing. Allow a few days: every entry
+          is read by a person.
+        </p>
+        <a class="btn btn--ghost" href={issueUrl} target="_blank" rel="noopener noreferrer">
+          Open an issue
+        </a>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">What we look for</h2>
+      </div>
+      <div class="rules">
+        <div>
+          <span class="eyebrow rules__label">Accepted</span>
+          <ul class="rules__list">
+            {good.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div>
+          <span class="eyebrow rules__label">Declined</span>
+          <ul class="rules__list rules__list--bad">
+            {bad.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">The listing file</h2>
+        <span class="head-rule__meta">
+          {required.length} required fields
+        </span>
+      </div>
+      <p class="muted small">
+        Required: {required.join(', ')}. The filename is the URL slug: lowercase letters, numbers
+        and hyphens, like <code>orbit-notes.json</code>.
+      </p>
+
+      <div class="code" data-code>
+        <div class="code__bar">
+          <span class="mono muted">data/apps/my-app.json</span>
+          <button class="btn btn--ghost btn--sm" type="button" data-copy>Copy</button>
+        </div>
+        <pre><code>{templateJson}</code></pre>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Field reference</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Field</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              fields.map((field) => (
+                <tr>
+                  <th scope="row" class="mono">
+                    {field.name}
+                    {required.includes(field.name) && <span class="req"> *</span>}
+                  </th>
+                  <td>{field.note}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="muted small" style="margin-block-start: var(--s4)">
+        A validator runs on every pull request, so a malformed file cannot be merged. Tools the
+        directory recognises include {VIBE_TOOLS.slice(0, 8).join(', ')}, and anything else is fine too.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Questions</h2>
+      </div>
+      <details>
+        <summary>Do I need to open-source it?</summary>
+        <p class="small muted">
+          No. Closed-source apps are welcome. Set <code>pricing</code> to anything but{' '}
+          <code>open-source</code> and leave out <code>repo</code>.
+        </p>
+      </details>
+      <details>
+        <summary>Can I list an app I did not build?</summary>
+        <p class="small muted">
+          Yes, if the maker is fine with it. Say how you know about it in the pull request.
+        </p>
+      </details>
+      <details>
+        <summary>How do I update or remove a listing?</summary>
+        <p class="small muted">
+          Open a pull request against your file. Older versions stay in the history, so removal is
+          one revert away.
+        </p>
+      </details>
+      <details>
+        <summary>Can I pay to be listed?</summary>
+        <p class="small muted">
+          Paid placement exists, always labelled and always expiring. See{' '}
+          <a href="/sponsor">sponsorship</a>. It is never a requirement to be listed.
+        </p>
+      </details>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  /* Shown when arriving from a product page, so the visitor knows the directory
+     already knows what they came to build. */
+  .targeting {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s3) var(--s4);
+    margin-block-end: var(--s5);
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+
+  .paths {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    border: 1px solid var(--ink);
+    margin-block-start: var(--s6);
+  }
+
+  .path {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s3);
+    padding: var(--s5) var(--s4);
+    border-inline-start: 1px solid var(--rule);
+  }
+
+  .path:first-child {
+    border-inline-start: 0;
+  }
+
+  .path--primary {
+    background: var(--accent-soft);
+  }
+
+  .path h2 {
+    font-size: var(--step-2);
+  }
+
+  .rules {
+    display: grid;
+    gap: var(--s6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+
+  .rules__label {
+    display: block;
+    margin-block-end: var(--s3);
+  }
+
+  .rules__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rules__list li {
+    position: relative;
+    padding: var(--s3) 0 var(--s3) 1.4rem;
+    border-block-end: 1px solid var(--rule-soft);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+
+  .rules__list li:first-child {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  .rules__list li::before {
+    content: '+';
+    position: absolute;
+    inset-inline-start: 0;
+    font-family: var(--font-mono);
+    color: var(--ok);
+  }
+
+  .rules__list--bad li::before {
+    content: '−';
+    color: var(--accent);
+  }
+
+  .code {
+    margin-block-start: var(--s4);
+    border: 1px solid var(--ink);
+  }
+
+  .code__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+    padding: var(--s2) var(--s3);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .code pre {
+    margin: 0;
+    border: 0;
+    max-height: 420px;
+    overflow: auto;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--ink);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: var(--s3);
+    border-block-end: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-mono);
+    color: var(--ink-3);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-block-end: 0;
+  }
+
+  tbody th {
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: var(--step--2);
+  }
+
+  td {
+    color: var(--ink-2);
+  }
+
+  .req {
+    color: var(--accent);
+  }
+
+  details {
+    border-block-end: 1px solid var(--rule-soft);
+    padding-block: var(--s3);
+  }
+
+  details:first-of-type {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  summary {
+    cursor: pointer;
+    font-size: var(--step-1);
+  }
+
+  summary::marker {
+    color: var(--accent);
+  }
+
+  details p {
+    margin-block-start: var(--s2);
+  }
+
+  @media (max-width: 640px) {
+    .path {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--rule);
+    }
+    .path:first-child {
+      border-block-start: 0;
+    }
+  }
+</style>
+
+<script type="application/json" data-product-index set:html={JSON.stringify(productIndex)} />
+
+<script>
+  interface ProductRef {
+    s: string;
+    n: string;
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-submit]');
+  const dataEl = document.querySelector<HTMLScriptElement>('[data-product-index]');
+
+  if (root && dataEl) {
+    const products: ProductRef[] = JSON.parse(dataEl.textContent ?? '[]');
+    const wanted = new URLSearchParams(location.search).get('product');
+    const product = wanted ? products.find((entry) => entry.s === wanted) : undefined;
+
+    if (product) {
+      const notice = root.querySelector<HTMLElement>('[data-targeting]');
+      const text = root.querySelector<HTMLElement>('[data-targeting-text]');
+
+      if (notice && text) {
+        const article = /^[aeiou]/i.test(product.n) ? 'an' : 'a';
+        text.textContent =
+          `You are filing ${article} ${product.n} replacement. Put it in the "replaces" field ` +
+          `so it lands on the ${product.n} page.`;
+        notice.hidden = false;
+      }
+
+      // Prefill the GitHub file with this product already claimed.
+      const template = JSON.parse(root.dataset.template ?? '{}') as Record<string, unknown>;
+      template.replaces = [
+        {
+          product: product.n,
+          kind: 'alternative',
+          note: 'One line on what yours does differently.',
+        },
+      ];
+
+      const base = root.dataset.repo ?? '';
+      const filename = `${product.s}-alternative.json`;
+      const url =
+        `${base}/new/main/data/apps?filename=${encodeURIComponent(filename)}` +
+        `&value=${encodeURIComponent(JSON.stringify(template, null, 2))}`;
+
+      for (const link of root.querySelectorAll<HTMLAnchorElement>('.path--primary a.btn')) {
+        link.href = url;
+      }
+
+      // Opening the issue form instead: say which product this is for.
+      const issueLink = root.querySelector<HTMLAnchorElement>('.path:not(.path--primary) a.btn');
+      if (issueLink) {
+        issueLink.href += `&title=${encodeURIComponent(`[App] ${product.n} alternative`)}`;
+      }
+
+      // Keep the code block honest: it is what people copy.
+      const code = root.querySelector<HTMLElement>('.code code');
+      if (code) code.textContent = JSON.stringify(template, null, 2);
+    }
+  }
+</script>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-code]').forEach((block) => {
+    const button = block.querySelector<HTMLButtonElement>('[data-copy]');
+    const code = block.querySelector('code');
+    if (!button || !code) return;
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        button.textContent = 'Copied';
+      } catch {
+        button.textContent = 'Press Ctrl+C';
+      }
+      window.setTimeout(() => {
+        button.textContent = 'Copy';
+      }, 1600);
+    });
+  });
+</script>

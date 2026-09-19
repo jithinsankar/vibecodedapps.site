@@ -1,0 +1,752 @@
+/* ==========================================================================
+   Vibecoded Directory: design system
+   Art direction: a printed catalogue. Bone paper, ink, one vermilion accent,
+   a high-contrast serif for display, a technical mono for metadata, and
+   hairlines doing the work that shadows usually do.
+   ========================================================================== */
+
+/* --- Reset ---------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:target {
+  scroll-margin-block: 7rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* --- Tokens --------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+
+  --paper: #f4f1ea;
+  --sunken: #eae5da;
+  --raised: #fbf9f5;
+  --ink: #16150f;
+  --ink-2: #4b473d;
+  --ink-3: #726c5c;
+
+  /* Rules: opaque enough to read as printed hairlines, not wispy borders. */
+  --rule: color-mix(in oklab, var(--ink) 20%, transparent);
+  --rule-soft: color-mix(in oklab, var(--ink) 12%, transparent);
+  --rule-strong: color-mix(in oklab, var(--ink) 42%, transparent);
+
+  /* One accent. Vermilion, printed rather than "AI purple". */
+  --accent: #cf3a11;
+  --on-accent: #fdf7f2;
+  --accent-soft: color-mix(in oklab, var(--accent) 9%, transparent);
+
+  --ok: #2c6b45;
+  --warn: #8a5a00;
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, ui-serif, serif;
+  --font-sans: 'Inter Tight Variable', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  --step--2: 0.6875rem;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --step-4: clamp(2.5rem, 1.2rem + 4.6vw, 4.5rem);
+
+  --tracking-display: -0.024em;
+  --tracking-mono: 0.14em;
+
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.75rem;
+  --s4: 1rem;
+  --s5: 1.5rem;
+  --s6: 2rem;
+  --s7: 3rem;
+  --s8: 4.5rem;
+  --s9: 7rem;
+
+  /* Shape: sharp. Nothing here is a friendly rounded SaaS card. */
+  --r: 2px;
+  --r-lg: 3px;
+
+  /* Column template shared by the index heading and every listing row. */
+  --row-grid: 2.75rem 2.5rem minmax(0, 1fr) 9.5rem 7.25rem 4.25rem 30px;
+
+  --container: 1240px;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* --- Paper texture ------------------------------------------------------
+     Two seamless noise tiles, each drawn by two fixed overlays above the page
+     (see the "Paper" section below). Nothing else in the system knows they
+     exist.
+
+     Two details matter here, and both were arrived at by measuring rather than
+     guessing:
+
+     1. The tiles are forced opaque. feTurbulence also randomises the alpha
+        channel, so without the alpha row in feColorMatrix the texture arrives
+        semi-transparent and its strength becomes unpredictable.
+     2. Each tile is contrast-boosted around mid-grey by feComponentTransfer.
+        The slope is paired with intercept = 0.5 - 0.5 * slope, which pins
+        mid-grey to mid-grey. That is what lets the texture ride on
+        `soft-light`: soft-light treats mid-grey as a no-op, so the grain adds
+        tooth without darkening the sheet. (Multiply looked better at first but
+        pulled the paper from 247 to 226: the sheet went grey, not papery.)
+
+     Tune strength with --grain-opacity / --mottle-opacity, and coarseness with
+     the slope values. baseFrequency x tile size is a whole number in both tiles,
+     which is what makes stitchTiles seamless.
+
+     3. Each filter region is pinned to the tile size. This one is not obvious
+        and it was the cause of a visible grid of squares: <filter> defaults to a
+        region of -10% / -10% / 120% / 120% of the bounding box, and stitchTiles
+        stitches to that region. A 500px tile therefore stitched on a 600px
+        period, so the noise never met itself at the tile edge and every seam
+        showed. filterUnits='userSpaceOnUse' with x/y/width/height equal to the
+        tile makes the stitch period and the background-repeat period the same
+        number. */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g' x='0' y='0' width='180' height='180' filterUnits='userSpaceOnUse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3.2' intercept='-1.1'/%3E%3CfeFuncG type='linear' slope='3.2' intercept='-1.1'/%3E%3CfeFuncB type='linear' slope='3.2' intercept='-1.1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* Broad unevenness in the tone of the sheet itself: the bit you notice when
+     it catches the light, not the bit you feel. */
+  --paper-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='m' x='0' y='0' width='500' height='500' filterUnits='userSpaceOnUse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.8' intercept='-0.4'/%3E%3CfeFuncG type='linear' slope='1.8' intercept='-0.4'/%3E%3CfeFuncB type='linear' slope='1.8' intercept='-0.4'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23m)'/%3E%3C/svg%3E");
+
+  --grain-opacity: 1;
+  --mottle-opacity: 0.75;
+  --paper-blend: soft-light;
+
+  /* How far the display type bleeds, as if printed on absorbent stock. Kept
+     sub-pixel on purpose: it should feel soft, never out of focus. */
+  --ink-blur: 0.4px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #131210;
+  --sunken: #0d0c0b;
+  --raised: #1a1917;
+  --ink: #f1eee6;
+  --ink-2: #b9b4a8;
+  --ink-3: #918b7d;
+
+  --rule: color-mix(in oklab, var(--ink) 22%, transparent);
+  --rule-soft: color-mix(in oklab, var(--ink) 13%, transparent);
+  --rule-strong: color-mix(in oklab, var(--ink) 44%, transparent);
+
+  --accent: #ff6134;
+  --on-accent: #180b06;
+  --accent-soft: color-mix(in oklab, var(--accent) 13%, transparent);
+
+  --ok: #7fc79b;
+  --warn: #e0b055;
+
+  /* On a dark sheet the texture has to be added rather than subtracted, so it
+     runs through `overlay` at roughly half strength. Calibrated by measuring:
+     this holds the paper tone to within a few levels while keeping the grain as
+     visible as it is in the light theme. */
+  --grain-opacity: 0.6;
+  --mottle-opacity: 0.5;
+  --paper-blend: overlay;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --paper: #131210;
+    --sunken: #0d0c0b;
+    --raised: #1a1917;
+    --ink: #f1eee6;
+    --ink-2: #b9b4a8;
+    --ink-3: #918b7d;
+
+    --rule: color-mix(in oklab, var(--ink) 22%, transparent);
+    --rule-soft: color-mix(in oklab, var(--ink) 13%, transparent);
+    --rule-strong: color-mix(in oklab, var(--ink) 44%, transparent);
+
+    --accent: #ff6134;
+    --on-accent: #180b06;
+    --accent-soft: color-mix(in oklab, var(--accent) 13%, transparent);
+
+    --ok: #7fc79b;
+    --warn: #e0b055;
+
+    --grain-opacity: 0.6;
+    --mottle-opacity: 0.5;
+    --paper-blend: overlay;
+  }
+}
+
+/* --- Base ----------------------------------------------------------------- */
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Paper ---------------------------------------------------------------- */
+
+/*
+ * The texture sits *above* the page rather than behind it, like a sheet lying on
+ * the screen. That is deliberate: a background layer would be hidden by every
+ * component that paints its own surface (the sticky header, cards, the footer),
+ * leaving visible seams where the paper stops. As an overlay the grain runs
+ * uninterrupted across the whole page, including over the type.
+ *
+ * Both layers are fixed, so the paper does not slide around as you scroll.
+ */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  mix-blend-mode: var(--paper-blend);
+}
+
+/* Fine tooth: what you feel with a fingertip. */
+body::before {
+  background-image: var(--paper-grain);
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+}
+
+/* Broad tonal unevenness: what you see when the sheet catches the light. */
+body::after {
+  background-image: var(--paper-mottle);
+  background-size: 500px 500px;
+  opacity: var(--mottle-opacity);
+}
+
+/* --- Soft ink ------------------------------------------------------------- */
+
+/*
+ * A sub-pixel blur on display type only, the way ink spreads into uncoated
+ * stock. Body copy is deliberately left crisp: blur on text you actually read
+ * costs legibility and buys nothing.
+ */
+.ink-soft {
+  filter: blur(var(--ink-blur));
+}
+
+/* Anyone who has asked for more contrast gets no bleed at all. */
+@media (prefers-contrast: more), (forced-colors: active) {
+  :root {
+    --ink-blur: 0px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 110, 'SOFT' 0, 'WONK' 1;
+  line-height: 1.02;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-4);
+  font-weight: 620;
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-2);
+  line-height: 1.15;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.18em;
+  transition: color 0.14s var(--ease), text-decoration-color 0.14s var(--ease);
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--sunken);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r);
+  padding: 0.08em 0.34em;
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.65;
+  background: var(--sunken);
+  border: 1px solid var(--rule);
+  padding: var(--s4);
+  overflow-x: auto;
+}
+
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+/* --- Layout --------------------------------------------------------------- */
+
+.page {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  padding-block: var(--s7) var(--s9);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--s5);
+}
+
+.container--narrow {
+  max-width: 760px;
+}
+
+.section {
+  margin-block-start: var(--s8);
+}
+
+.section--tight {
+  margin-block-start: var(--s7);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+/* Button/link rows. Named to avoid colliding with the listing row component. */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+}
+
+/* A section heading with a rule running out to the margin, like a printed
+   index entry. */
+.head-rule {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s4);
+  padding-block-end: var(--s2);
+  border-block-end: 1px solid var(--ink);
+  margin-block-end: var(--s5);
+}
+
+.head-rule__title {
+  font-size: var(--step-2);
+  margin: 0;
+  margin-inline-end: auto;
+}
+
+.head-rule__meta {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+/* Hold the meta to one line only while there is room for it. */
+@media (max-width: 620px) {
+  .head-rule__meta {
+    white-space: normal;
+  }
+}
+
+/* --- Micro typography ----------------------------------------------------- */
+
+.eyebrow,
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 46ch;
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+.small {
+  font-size: var(--step--1);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+/* --- Primitives ----------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.72rem 1.15rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--r);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  /* Long unbreakable tokens, such as an email address or a URL, must not push the
+     button wider than the column. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.14s var(--ease), color 0.14s var(--ease),
+    border-color 0.14s var(--ease);
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--accent:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.btn--sm {
+  padding: 0.5rem 0.8rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+}
+
+a.chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.chip--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  /* A nowrap badge is only as safe as the room it has. */
+  max-width: 100%;
+}
+
+.badge--accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.badge--outline-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Monogram tile: a printed stamp, not a candy gradient. */
+.tile {
+  --tile-size: 40px;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: calc(var(--tile-size) * 0.32);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile--lg {
+  --tile-size: 64px;
+}
+
+.tile--sm {
+  --tile-size: 30px;
+  font-size: calc(var(--tile-size) * 0.36);
+}
+
+/* --- Prose ---------------------------------------------------------------- */
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  color: var(--ink-2);
+  font-size: var(--step-1);
+  line-height: 1.62;
+  max-width: 62ch;
+}
+
+.prose h2,
+.prose h3 {
+  color: var(--ink);
+  margin-block-start: var(--s3);
+}
+
+/* --- Forms ---------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.input {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-block-end: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 0.5rem 0;
+  font-size: var(--step-0);
+  transition: border-color 0.14s var(--ease);
+}
+
+.input::placeholder {
+  color: var(--ink-3);
+}
+
+.input:hover,
+.input:focus {
+  border-block-end-color: var(--accent);
+  outline: none;
+}
+
+.select {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-block-end: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 0.28rem 1.25rem 0.28rem 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 0.65rem) 55%, calc(100% - 0.35rem) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.select:hover,
+.select:focus {
+  border-block-end-color: var(--accent);
+  outline: none;
+}
+
+/* --- Utility -------------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--s4);
+  top: -100%;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--s4);
+}

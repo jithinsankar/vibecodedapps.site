@@ -1,0 +1,30 @@
+{
+  "name": "Lingo",
+  "tagline": "Gamified language learning platform with audio lessons, hearts, and leaderboards",
+  "description": "A full-stack Duolingo clone designed to make learning languages engaging through sound effects, interactive character prompts, streak tracking, and quest achievements.\n\nBuilt over a 3-day sprint with Cursor and Claude Code, pairing Next.js 14 App Router with Drizzle ORM and Neon Postgres. What surprised the builder was how seamlessly AI voice synthesis slotted into the flashcard flow.",
+  "url": "https://duolingo-clone-next14.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/next14-duolingo-clone",
+  "category": "Education",
+  "replaces": [
+    {
+      "product": "Duolingo",
+      "kind": "clone",
+      "note": "Gamified language learning mechanics without aggressive monetization or ads."
+    }
+  ],
+  "tags": ["duolingo", "gamification", "languages", "education", "sound-effects"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js 14", "Drizzle ORM", "Neon Postgres", "Tailwind CSS", "Clerk"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-12-05",
+  "stars": 1420,
+  "featured": true,
+  "placeholder": false
+}

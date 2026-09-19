@@ -1,0 +1,30 @@
+{
+  "name": "Postiz",
+  "tagline": "AI-native open-source social media post scheduler across 28+ platforms",
+  "description": "An open-source, self-hosted social media management tool. Schedule and cross-post updates to Twitter/X, LinkedIn, Reddit, Instagram, Threads, and YouTube with built-in AI copywriting agents.\n\nVibecoded with Cursor and Astra / Claude agents to automate social media scheduling workflows and handle OAuth compliance across dozens of platforms.",
+  "url": "https://postiz.com",
+  "repo": "https://github.com/gitroomhq/postiz-app",
+  "category": "Marketing",
+  "replaces": [
+    {
+      "product": "Buffer",
+      "kind": "alternative",
+      "note": "Uncapped multi-channel social scheduling with automated AI agent copy refinement."
+    }
+  ],
+  "tags": ["buffer", "social-media", "scheduler", "automation", "marketing"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Redis"],
+  "maker": {
+    "name": "Nevo David",
+    "handle": "nevodavid",
+    "url": "https://github.com/gitroomhq",
+    "avatar": "https://github.com/gitroomhq.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-11-04",
+  "stars": 19400,
+  "featured": true,
+  "placeholder": false
+}

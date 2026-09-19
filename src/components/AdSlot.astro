@@ -1,0 +1,57 @@
+---
+/**
+ * Ad slot.
+ *
+ * Ads are OFF by default (`ADS.enabled` in src/config.ts). When disabled this
+ * component renders nothing at all: no markup, no network request.
+ *
+ * When you switch ads on, drop your provider snippet into the marked block.
+ * The slot already reserves its height, so enabling ads will not cause layout
+ * shift and will not force a redesign.
+ */
+import { ADS } from '../config';
+
+interface Props {
+  /** Which slot from ADS.slots to render. */
+  slot: keyof typeof ADS.slots;
+  /** Label shown above the ad. Keeps the placement honest and unobtrusive. */
+  label?: string;
+  class?: string;
+}
+
+const { slot, label = 'Advertisement', class: className = '' } = Astro.props;
+const showAd = ADS.enabled && Boolean(ADS.slots[slot]);
+---
+
+{
+  showAd && (
+    <aside class={`ad ${className}`} data-ad-slot={slot} aria-label={label}>
+      <span class="ad__label">{label}</span>
+      <div class="ad__body" id={`ad-${slot}`}>
+        {/* Provider snippet goes here. Example for AdSense:
+            <ins class="adsbygoogle" data-ad-client={ADS.client} data-ad-slot={ADS.slots[slot]} /> */}
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .ad {
+    display: block;
+    border: 1px dashed var(--rule-strong);
+    padding: var(--s4);
+    background: transparent;
+    /* Reserved height: no layout shift when an ad finally loads. */
+    min-height: 104px;
+  }
+
+  .ad__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-block-end: var(--s2);
+  }
+</style>

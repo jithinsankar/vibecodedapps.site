@@ -1,0 +1,30 @@
+{
+  "name": "Compositor",
+  "tagline": "Ultra-lightweight layer-based raster image editor designed to escape Adobe subscriptions",
+  "description": "A fast, lightweight layer-based image editor built as an antidote to Adobe's heavy Creative Cloud footprint. Features layers, selection tools, blend modes, adjustments, and instant export under 15MB.\n\nDesigned by Robbie Tilton and planned with GPT-6 Astra and Claude Code to prove that essential photo editing doesn't require a 6GB install or a monthly license.",
+  "url": "https://compositor.design",
+  "repo": "https://github.com/robbietilton/compositor",
+  "category": "Design",
+  "replaces": [
+    {
+      "product": "Adobe Photoshop",
+      "kind": "clone",
+      "note": "Instant layer-based photo editing without Adobe Creative Cloud bloat or subscription fees."
+    }
+  ],
+  "tags": ["photoshop", "image-editor", "layers", "design", "lightweight"],
+  "builtWith": ["GPT-6 Astra", "Claude Code"],
+  "stack": ["TypeScript", "Canvas", "WebGL", "Tauri"],
+  "maker": {
+    "name": "Robbie Tilton",
+    "handle": "robbietilton",
+    "url": "https://github.com/robbietilton",
+    "avatar": "https://github.com/robbietilton.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2026-09-01",
+  "stars": 1850,
+  "featured": true,
+  "placeholder": false
+}

@@ -1,0 +1,30 @@
+{
+  "name": "VibeCanvas",
+  "tagline": "Fullstack AI graphic design editor with background removal and templates",
+  "description": "An in-browser graphic design suite inspired by Canva. Create social media posts, apply typography presets, generate AI backgrounds, and export high-res PNG/PDF files with zero paywalls.\n\nVibecoded with Next.js 14, Fabric.js, and Hono using Cursor and Claude Code over a 3-day hack sprint.",
+  "url": "https://canva-clone-next14.vercel.app",
+  "repo": "https://github.com/Davronov-Alimardon/canva-clone",
+  "category": "Design",
+  "replaces": [
+    {
+      "product": "Canva",
+      "kind": "clone",
+      "note": "Drag-and-drop graphic creation and AI background tools without Canva Pro export restrictions."
+    }
+  ],
+  "tags": ["canva", "graphic-design", "fabricjs", "canvas", "ai"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js 14", "Fabric.js", "Hono", "Drizzle ORM", "Neon Postgres"],
+  "maker": {
+    "name": "Alimardon Davronov",
+    "handle": "Davronov-Alimardon",
+    "url": "https://github.com/Davronov-Alimardon",
+    "avatar": "https://github.com/Davronov-Alimardon.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-10-08",
+  "stars": 1180,
+  "featured": true,
+  "placeholder": false
+}

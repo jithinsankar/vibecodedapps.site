@@ -1,0 +1,372 @@
+---
+/**
+ * "Is there a vibecoded clone of ___?"
+ *
+ * The directory's whole premise as one control. The input sits inside the H1, the
+ * results answer the question as you type, and the server-rendered fallback is
+ * the most-replaced products, so it still reads correctly with JavaScript off.
+ */
+import Icon from './Icon.astro';
+import type { ProductView } from '../lib/apps';
+
+interface Props {
+  products: ProductView[];
+  limit?: number;
+}
+
+const { products, limit = 6 } = Astro.props;
+
+const covered = products.filter((product) => product.count > 0);
+const initial = (covered.length > 0 ? covered : products).slice(0, limit);
+
+const index = products.map((product) => ({
+  n: product.name,
+  s: product.slug,
+  v: product.vendor,
+  c: product.count,
+  k: [product.name, product.vendor, ...product.aliases].join(' ').toLowerCase(),
+}));
+---
+
+<h1 class="hero__title">
+  <span class="hero__ask">Is there a vibecoded clone of</span>
+  <span class="hero__blank">
+    <span class="hero__field">
+      <input
+        id="product-q"
+        class="hero__input"
+        data-product-input
+        type="search"
+        placeholder="Photoshop"
+        aria-label="Product to find a vibecoded replacement for"
+        autocomplete="off"
+        spellcheck="false"
+        enterkeyhint="search"
+      />
+    </span>
+    <span class="hero__qmark" aria-hidden="true">?</span>
+  </span>
+</h1>
+
+<div class="finder" data-product-finder>
+  <ul class="finder__list" data-product-results>
+    {
+      initial.map((product) => (
+        <li>
+          <a class="finder__item" href={`/clone/${product.slug}`}>
+            <span class="finder__name">{product.name}</span>
+            <span class="finder__vendor mono">
+              {product.vendor === product.name ? '' : product.vendor}
+            </span>
+            <span class="finder__verdict mono" data-yes={product.count > 0 ? 'true' : 'false'}>
+              {product.count > 0 ? `${product.count} ${product.count === 1 ? 'listing' : 'listings'}` : 'not yet'}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="finder__hint">
+    <span data-product-hint>
+      {covered.length} of {products.length} products have a vibecoded alternative.
+    </span>
+    <a href="/clones">
+      Browse all {products.length} <Icon name="arrow-right" size={12} />
+    </a>
+  </p>
+</div>
+
+{/*
+  Rows rendered by the client are cloned from this template. Astro scopes styles at
+  build time, so nodes built with createElement would arrive unstyled. Cloning a
+  template keeps the scope attribute and the markup in one place.
+*/}
+<template data-product-template>
+  <li>
+    <a class="finder__item" href="/clones">
+      <span class="finder__name"></span>
+      <span class="finder__vendor mono"></span>
+      <span class="finder__verdict mono"></span>
+    </a>
+  </li>
+</template>
+
+<script type="application/json" data-product-index set:html={JSON.stringify(index)} />
+
+<style>
+  .hero__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s3);
+    margin-block: var(--s2) var(--s5);
+  }
+
+  .hero__ask,
+  .hero__qmark {
+    color: var(--ink);
+  }
+
+  /* The blank and its question mark travel together, so they never separate. */
+  .hero__blank {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.1em;
+    max-width: 100%;
+  }
+
+  /* A ruled slot to fill in, sized in the display face. */
+  .hero__field {
+    display: inline-flex;
+    align-items: baseline;
+    max-width: 100%;
+    border-block-end: 3px solid var(--accent);
+  }
+
+  .hero__input {
+    /*
+     * The no-JS width, and the width for the first paint. Sized in em, not ch:
+     * ch is the width of the digit zero and Fraunces has an unusually wide zero,
+     * so 12ch came out at 581px for a word that needs 343px. The surplus pushed
+     * the question mark away from the word it should hug and wrapped the heading
+     * onto two lines at every desktop width. The script refines this as you type.
+     */
+    width: 5em;
+    min-width: 0;
+    max-width: 100%;
+    border: 0;
+    padding: 0 0 0.06em;
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: inherit;
+    font-weight: 620;
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 1;
+    letter-spacing: var(--tracking-display);
+    line-height: 1;
+    outline: none;
+    text-overflow: ellipsis;
+  }
+
+  .hero__input::placeholder {
+    color: color-mix(in oklab, var(--accent) 42%, transparent);
+  }
+
+  .hero__input::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
+  .finder {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    max-width: 620px;
+  }
+
+  .finder__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .finder__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    gap: var(--s4);
+    padding: var(--s3) var(--s2);
+    border-block-end: 1px solid var(--rule-soft);
+    text-decoration: none;
+    transition: background-color 0.12s var(--ease), color 0.12s var(--ease);
+  }
+
+  .finder__item:hover,
+  .finder__item:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .finder__item:hover .finder__vendor,
+  .finder__item:hover .finder__verdict,
+  .finder__item:focus-visible .finder__vendor,
+  .finder__item:focus-visible .finder__verdict {
+    color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  .finder__name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.014em;
+  }
+
+  .finder__vendor,
+  .finder__verdict {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .finder__verdict[data-yes='true'] {
+    color: var(--accent);
+  }
+
+  .finder__hint {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s3);
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.02em;
+    color: var(--ink-3);
+  }
+
+  .finder__hint a {
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  :global(.finder__empty) {
+    padding: var(--s3) var(--s2);
+    border-block-end: 1px solid var(--rule-soft);
+    color: var(--ink-3);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 620px) {
+    .finder__item {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--s1);
+    }
+    .finder__vendor {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  interface ProductRecord {
+    n: string;
+    s: string;
+    v: string;
+    c: number;
+    k: string;
+  }
+
+  const finder = document.querySelector<HTMLElement>('[data-product-finder]');
+  const dataEl = document.querySelector<HTMLScriptElement>('[data-product-index]');
+
+  if (finder && dataEl) {
+    const products: ProductRecord[] = JSON.parse(dataEl.textContent ?? '[]');
+    const input = document.querySelector<HTMLInputElement>('[data-product-input]');
+    const list = finder.querySelector<HTMLUListElement>('[data-product-results]');
+    const hint = finder.querySelector<HTMLElement>('[data-product-hint]');
+    const template = document.querySelector<HTMLTemplateElement>('[data-product-template]');
+
+    const covered = products.filter((product) => product.c > 0);
+    const limit = 6;
+
+    function score(product: ProductRecord, query: string): number {
+      const name = product.n.toLowerCase();
+      if (name === query) return 0;
+      if (name.startsWith(query)) return 1;
+      if (product.s.startsWith(query)) return 2;
+      if (name.includes(query)) return 3;
+      if (product.k.includes(query)) return 4;
+      return -1;
+    }
+
+    function render(matches: ProductRecord[]) {
+      if (!list) return;
+      list.textContent = '';
+
+      if (matches.length === 0) {
+        const empty = document.createElement('li');
+        empty.className = 'finder__empty';
+        empty.textContent = 'Not in the catalogue yet. ';
+        const link = document.createElement('a');
+        link.href = '/clones';
+        link.textContent = 'See everything the directory covers';
+        empty.append(link);
+        list.append(empty);
+        return;
+      }
+
+      for (const product of matches) {
+        if (!template) continue;
+
+        const node = template.content.cloneNode(true) as DocumentFragment;
+        const link = node.querySelector<HTMLAnchorElement>('.finder__item');
+        const name = node.querySelector<HTMLElement>('.finder__name');
+        const vendor = node.querySelector<HTMLElement>('.finder__vendor');
+        const verdict = node.querySelector<HTMLElement>('.finder__verdict');
+
+        if (!link || !name || !vendor || !verdict) continue;
+
+        link.href = `/clone/${product.s}`;
+        name.textContent = product.n;
+        vendor.textContent = product.v === product.n ? '' : product.v;
+        verdict.dataset.yes = product.c > 0 ? 'true' : 'false';
+        verdict.textContent =
+          product.c > 0 ? `${product.c} listing${product.c === 1 ? '' : 's'}` : 'not yet';
+
+        list.append(node);
+      }
+    }
+
+    function update() {
+      const query = (input?.value ?? '').trim().toLowerCase();
+
+      /*
+       * Grow the ruled slot with the text, so long product names are not clipped.
+       *
+       * Sized in em, not ch. ch is the width of the digit zero, and Fraunces has
+       * an unusually wide zero, so ch over-allocated by nearly 70%: "Photoshop"
+       * needs 343px but was given 581px. That pushed the question mark away from
+       * the word it is meant to hug and forced the heading onto two lines at every
+       * desktop width, including 1920. A character in this face averages 0.5em.
+       */
+      if (input) {
+        const text = input.value || input.placeholder;
+        const width = Math.max(4, Math.min(24, (text.length + 1) * 0.5));
+        input.style.width = `${width}em`;
+      }
+
+      if (!query) {
+        render(covered.slice(0, limit));
+        if (hint) {
+          hint.textContent = `${covered.length} of ${products.length} products have a vibecoded alternative.`;
+        }
+        return;
+      }
+
+      const matches = products
+        .map((product) => ({ product, rank: score(product, query) }))
+        .filter((entry) => entry.rank >= 0)
+        .sort((a, b) => a.rank - b.rank || b.product.c - a.product.c || a.product.n.localeCompare(b.product.n))
+        .slice(0, limit)
+        .map((entry) => entry.product);
+
+      render(matches);
+
+      if (hint) {
+        const hit = matches.filter((product) => product.c > 0).length;
+        hint.textContent = hit > 0 ? `${hit} with a replacement` : 'No replacement found for that yet';
+      }
+    }
+
+    input?.addEventListener('input', update);
+    input?.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      const first = list?.querySelector<HTMLAnchorElement>('.finder__item');
+      if (first) {
+        event.preventDefault();
+        location.href = first.href;
+      }
+    });
+  }
+</script>

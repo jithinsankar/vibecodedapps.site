@@ -1,0 +1,328 @@
+---
+/**
+ * The page this whole directory exists to answer:
+ *
+ *   "Is there a vibecoded clone of Photoshop?"
+ *
+ * One page per product in data/products.json, including the products nobody has
+ * replaced yet, where the honest answer is "not yet, and here is what it would
+ * take". Both answers are useful, so both get a page.
+ */
+import AppRow from '../../components/AppRow.astro';
+import Icon from '../../components/Icon.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../config';
+import {
+  categorySlug,
+  getApps,
+  noteFor,
+  productsWithCounts,
+  type ProductView,
+} from '../../lib/apps';
+import { breadcrumbLd, faqLd, itemListLd } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const apps = await getApps();
+  return productsWithCounts(apps).map((product) => ({
+    params: { slug: product.slug },
+    props: { product, products: productsWithCounts(apps) },
+  }));
+}
+
+interface Props {
+  product: ProductView;
+  products: ProductView[];
+}
+
+const { product, products } = Astro.props;
+const has = product.count > 0;
+const productHost = new URL(product.homepage).hostname.replace(/^www\./, '');
+
+const siblings = products
+  .filter((other) => other.section === product.section && other.slug !== product.slug)
+  .slice(0, 6);
+
+const question = `Is there a vibecoded clone of ${product.name}?`;
+
+const title = has
+  ? `Vibecoded clone of ${product.name}? Yes: ${product.count} ${product.count === 1 ? 'app' : 'apps'}`
+  : `Vibecoded clone of ${product.name}? Not yet`;
+
+const description = has
+  ? `Yes: ${product.count} vibecoded ${product.count === 1 ? 'alternative' : 'alternatives'} to ${product.name} (${product.vendor}). What each one does differently, who built it, and what it still cannot do.`
+  : `Not yet. Nobody in the vibecoded directory has replaced ${product.name}. Here is what a clone would have to get right, and how to submit one.`;
+
+const answerText = has
+  ? `Yes. ${product.apps.length} ${product.apps.length === 1 ? 'app' : 'apps'} in the directory ${product.apps.length === 1 ? 'replaces' : 'replace'} ${product.name}: ${product.apps
+      .map((app) => `${app.name} (${app.replacements.find((r) => r.slug === product.slug)?.kind})`)
+      .join(', ')}.`
+  : `Not yet. Nobody in the directory has built a ${product.name} replacement. ${product.gap}`;
+
+// The two results the submitted-app rows would otherwise duplicate.
+const closest = has
+  ? []
+  : (await getApps())
+      .filter((app) => app.category === product.section && app.replacements.length > 0)
+      .slice(0, 3);
+
+const structuredData = [
+  breadcrumbLd([
+    { name: 'Index', path: '/' },
+    { name: 'Replacements', path: '/clones/' },
+    { name: product.name, path: `/clone/${product.slug}/` },
+  ]),
+  faqLd([
+    { question, answer: answerText },
+    {
+      question: `What would a vibecoded ${product.name} clone have to get right?`,
+      answer: product.gap,
+    },
+    ...(has
+      ? [
+          {
+            question: `Which vibecoded apps replace ${product.name}?`,
+            answer: product.apps
+              .map((app) => `${app.name}: ${app.tagline}. ${noteFor(app, product.slug) ?? ''}`.trim())
+              .join(' '),
+          },
+        ]
+      : []),
+  ]),
+  ...(has
+    ? [
+        itemListLd(
+          `Vibecoded ${product.name} alternatives`,
+          product.apps.map((app) => ({ name: app.name, path: `/apps/${app.slug}/` })),
+        ),
+      ]
+    : []),
+];
+---
+
+<BaseLayout title={title} description={description} structuredData={structuredData}>
+  <div class="container container--narrow">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href="/">Index</a>
+      <span aria-hidden="true">/</span>
+      <a href="/clones">Replacements</a>
+      <span aria-hidden="true">/</span>
+      <span class="muted">{product.name}</span>
+    </nav>
+
+    <header class="head">
+      <p class="eyebrow ink-soft">
+        {product.section} · {product.vendor} ·{' '}
+        {has ? `${product.count} ${product.count === 1 ? 'listing' : 'listings'}` : 'no listings yet'}
+      </p>
+      <h1 class="ink-soft">{question}</h1>
+
+      <p class="verdict ink-soft" data-answer={has ? 'yes' : 'no'}>
+        <span class="verdict__mark">{has ? 'Yes' : 'Not yet'}</span>
+        <span class="verdict__text">
+          {
+            has
+              ? `${product.count} ${product.count === 1 ? 'app' : 'apps'} in the directory ${product.count === 1 ? 'stands' : 'stand'} in for it.`
+              : 'Nobody in the directory has built one.'
+          }
+        </span>
+      </p>
+
+      <p class="lede">
+        <strong>{product.name}</strong>: {product.summary} Built by {product.vendor}.{' '}
+        <a href={product.homepage} target="_blank" rel="noopener noreferrer">
+          {productHost} <Icon name="arrow-up-right" size={12} />
+        </a>
+      </p>
+    </header>
+
+    {
+      has && (
+        <section class="section--tight">
+          <div class="head-rule">
+            <h2 class="head-rule__title">{product.name} replacements</h2>
+            <span class="head-rule__meta">
+              {product.clones > 0 && `${product.clones} clone${product.clones === 1 ? '' : 's'}`}
+              {product.clones > 0 && (product.alternatives > 0 || product.inspiredBy > 0) && ' · '}
+              {product.alternatives > 0 && `${product.alternatives} alternative${product.alternatives === 1 ? '' : 's'}`}
+              {product.alternatives > 0 && product.inspiredBy > 0 && ' · '}
+              {product.inspiredBy > 0 && `${product.inspiredBy} inspired by`}
+            </span>
+          </div>
+
+          <div class="index">
+            {product.apps.map((app, index) => (
+              <AppRow app={app} index={index} note={noteFor(app, product.slug)} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">What a clone would have to get right</h2>
+      </div>
+      <p class="prose-copy">{product.gap}</p>
+      <p class="muted small">
+        That is the bar. Every listing on this page is judged against it, not against how pleasant the
+        landing page looks.
+      </p>
+    </section>
+
+    {
+      closest.length > 0 && (
+        <section class="section">
+          <div class="head-rule">
+            <h2 class="head-rule__title">Closest things in the directory</h2>
+            <span class="head-rule__meta">{product.section}</span>
+          </div>
+          <div class="index">
+            {closest.map((app, index) => (
+              <AppRow app={app} index={index} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      !has && (
+        <section class="section">
+          <div class="callout">
+            <span class="eyebrow">Gap in the directory</span>
+            <h2>Know a vibecoded {product.name} replacement?</h2>
+            <p class="muted">
+              This page is waiting for one. A listing is a single JSON file. Say which product it
+              replaces and a maintainer will review it.
+            </p>
+            <div class="btn-row">
+              <a class="btn" href={`/submit?product=${product.slug}`}>
+                Submit {/^[aeiou]/i.test(product.name) ? 'an' : 'a'} {product.name} alternative{' '}
+                <Icon name="arrow-right" size={14} />
+              </a>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">More in {product.section}</h2>
+        <span class="head-rule__meta">
+          <a href={`/category/${categorySlug(product.section)}`}>See the section</a>
+        </span>
+      </div>
+      <div class="cluster">
+        {
+          siblings.map((other) => (
+            <a class="chip" href={`/clone/${other.slug}`}>
+              {other.name}{' '}
+              <span class={other.count > 0 ? 'chip__yes' : 'muted'}>
+                {other.count > 0 ? `${other.count} ✓` : 'not yet'}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <p class="muted small" style="margin-block-start: var(--s4)">
+        Missing a product entirely? <a href={`${SITE.repo}/issues/new`}>Open an issue</a> and it gets
+        added to the catalogue.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    margin-block-end: var(--s5);
+  }
+
+  .crumbs a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--accent);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  /* The answer. This is the sentence a search result should be able to quote. */
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s3);
+    font-size: var(--step-1);
+  }
+
+  .verdict__mark {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 620;
+    font-style: italic;
+    font-variation-settings: 'opsz' 90, 'SOFT' 30, 'WONK' 1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .verdict[data-answer='no'] .verdict__mark {
+    color: var(--ink);
+  }
+
+  .verdict__text {
+    color: var(--ink-2);
+  }
+
+  .prose-copy {
+    font-size: var(--step-1);
+    line-height: 1.62;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin-block-end: var(--s3);
+  }
+
+  .callout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s3);
+    padding: var(--s6) var(--s5);
+    border: 1px solid var(--ink);
+    background: var(--accent-soft);
+  }
+
+  .callout h2 {
+    font-size: var(--step-2);
+  }
+
+  .callout p {
+    max-width: 52ch;
+  }
+
+  .chip__yes {
+    color: var(--ok);
+  }
+
+  @media (max-width: 620px) {
+    .verdict__mark {
+      font-size: var(--step-1);
+    }
+  }
+</style>

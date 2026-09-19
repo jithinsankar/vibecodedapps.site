@@ -1,0 +1,123 @@
+---
+import AppRow from '../../components/AppRow.astro';
+import Icon from '../../components/Icon.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoriesWithCounts, categorySlug, getApps, sortApps, type AppView } from '../../lib/apps';
+import { breadcrumbLd, itemListLd } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const apps = await getApps();
+  return categoriesWithCounts(apps).map((category) => ({
+    params: { slug: category.slug },
+    props: {
+      name: category.name,
+      apps: sortApps(
+        apps.filter((app) => app.category === category.name),
+        'newest',
+      ),
+    },
+  }));
+}
+
+interface Props {
+  name: string;
+  apps: AppView[];
+}
+
+const { name, apps } = Astro.props;
+const all = await getApps();
+const siblings = categoriesWithCounts(all).filter((category) => category.name !== name);
+const pad = (value: number) => String(value).padStart(3, '0');
+
+const structuredData = [
+  breadcrumbLd([
+    { name: 'Index', path: '/' },
+    { name: 'Sections', path: '/categories/' },
+    { name, path: `/category/${categorySlug(name)}/` },
+  ]),
+  itemListLd(
+    `${name} apps`,
+    apps.map((app) => ({ name: app.name, path: `/apps/${app.slug}/` })),
+  ),
+];
+---
+
+<BaseLayout
+  title={`${name} apps`}
+  description={`${apps.length} vibecoded ${name.toLowerCase()} apps in the directory, newest first.`}
+  structuredData={structuredData}
+>
+  <div class="container">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href="/">Index</a>
+      <span aria-hidden="true">/</span>
+      <a href="/categories">Sections</a>
+      <span aria-hidden="true">/</span>
+      <span class="muted">{name}</span>
+    </nav>
+
+    <header class="head">
+      <p class="eyebrow">Section · {pad(apps.length)} entries</p>
+      <h1>{name}</h1>
+      <p class="lede">
+        Newest first. Paid placements, if there are any, carry a label on the row.
+      </p>
+    </header>
+
+    <div class="index">
+      {apps.map((app, index) => <AppRow app={app} index={index} />)}
+    </div>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Other sections</h2>
+      </div>
+      <div class="cluster">
+        {
+          siblings.map((category) => (
+            <a class="chip" href={`/category/${category.slug}`}>
+              {category.name} <span class="muted numeric">{pad(category.count)}</span>
+            </a>
+          ))
+        }
+      </div>
+      <p class="btn-row" style="margin-block-start: var(--s5)">
+        <a class="btn btn--ghost btn--sm" href={`/submit?section=${encodeURIComponent(name)}`}>
+          Add to {name} <Icon name="arrow-right" size={12} />
+        </a>
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    margin-block-end: var(--s5);
+  }
+
+  .crumbs a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--accent);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    max-width: 54ch;
+    margin-block-end: var(--s6);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const suggestions = [
+  'Check the address for a typo',
+  'Search the index for the app by name',
+  'Browse a section instead',
+];
+---
+
+<BaseLayout title="Not found" description="That page does not exist." noindex>
+  <div class="container container--narrow">
+    <p class="eyebrow">Error 404</p>
+    <h1>That page is not in the index.</h1>
+    <p class="lede">
+      The listing may have been renamed, or the link was never right. The whole directory is one
+      search box away.
+    </p>
+
+    <ul class="list">
+      {suggestions.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <div class="btn-row">
+      <a class="btn" href="/">Back to the index <Icon name="arrow-right" size={14} /></a>
+      <a class="btn btn--ghost" href="/submit">Add a missing app</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-block: var(--s3) var(--s4);
+  }
+
+  .list {
+    margin-block: var(--s6);
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    color: var(--ink-2);
+    font-size: var(--step--1);
+  }
+
+  .list li {
+    padding-block-end: var(--s2);
+    border-block-end: 1px solid var(--rule-soft);
+  }
+</style>

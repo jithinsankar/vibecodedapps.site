@@ -1,0 +1,372 @@
+---
+/**
+ * The catalogue: every product the directory knows about, what has replaced it,
+ * and what is still open.
+ *
+ * The gaps matter as much as the hits. "Nobody has built this yet" is a real
+ * answer, and it is the one that invites a submission.
+ */
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getApps, productsWithCounts } from '../lib/apps';
+import { breadcrumbLd, itemListLd } from '../lib/seo';
+
+const apps = await getApps();
+const products = productsWithCounts(apps);
+const covered = products.filter((product) => product.count > 0);
+const gaps = products.filter((product) => product.count === 0);
+
+const sections = [...new Set(products.map((product) => product.section))];
+const pad = (value: number) => String(value).padStart(2, '0');
+
+const structuredData = [
+  breadcrumbLd([
+    { name: 'Index', path: '/' },
+    { name: 'Replacements', path: '/clones/' },
+  ]),
+  itemListLd(
+    'Products in the catalogue',
+    products.map((product) => ({ name: product.name, path: `/clone/${product.slug}/` })),
+  ),
+];
+---
+
+<BaseLayout
+  title="Replacements"
+  description={`Is there a vibecoded clone of it? ${covered.length} of ${products.length} well-known products already have one. The rest are open.`}
+  structuredData={structuredData}
+>
+  <div class="container">
+    <header class="head">
+      <p class="eyebrow">Replacements</p>
+      <h1>What are you replacing?</h1>
+      <p class="lede">
+        {products.length} well-known products, catalogued. {covered.length} of them already have a
+        vibecoded alternative in this directory; {gaps.length} are still open, and each of those has a
+        page saying what a clone would have to get right.
+      </p>
+    </header>
+
+    <div class="toolbar" data-toolbar>
+      <div class="toolbar__group toolbar__group--grow">
+        <label class="label" for="product-filter">Find a product</label>
+        <input
+          id="product-filter"
+          class="input"
+          type="search"
+          placeholder="Photoshop, Spotify, spreadsheet…"
+          autocomplete="off"
+          spellcheck="false"
+          data-product-filter
+        />
+      </div>
+
+      <div class="toolbar__group">
+        <span class="label">Show</span>
+        <div class="toggle">
+          <button class="toggle__btn" type="button" data-state="all" aria-pressed="true">All</button>
+          <button class="toggle__btn" type="button" data-state="covered" aria-pressed="false">
+            Replaced
+          </button>
+          <button class="toggle__btn" type="button" data-state="gaps" aria-pressed="false">Open</button>
+        </div>
+      </div>
+
+      <p class="toolbar__count mono" data-product-count>
+        {pad(products.length)} products · {pad(covered.length)} replaced
+      </p>
+    </div>
+
+    <div data-products>
+      {
+        sections.map((section) => {
+          const list = products.filter((product) => product.section === section);
+          if (list.length === 0) return null;
+
+          return (
+            <section class="group" data-group>
+              <div class="head-rule">
+                <h2 class="head-rule__title">{section}</h2>
+                <span class="head-rule__meta">
+                  {list.filter((product) => product.count > 0).length} of {list.length} replaced
+                </span>
+              </div>
+
+              <div class="index">
+                {list.map((product) => (
+                  <a
+                    class="prod"
+                    href={`/clone/${product.slug}`}
+                    data-product
+                    data-covered={product.count > 0 ? 'true' : 'false'}
+                    data-search={[product.name, product.vendor, ...product.aliases]
+                      .join(' ')
+                      .toLowerCase()}
+                  >
+                    <span class="prod__name">{product.name}</span>
+                    <span class="prod__vendor mono">{product.vendor}</span>
+                    <span class="prod__apps mono">
+                      {product.count > 0
+                        ? product.apps.map((app) => app.name).join(', ')
+                        : product.summary}
+                    </span>
+                    <span class="prod__state mono" data-yes={product.count > 0 ? 'true' : 'false'}>
+                      {product.count > 0
+                        ? `${pad(product.count)} ${product.count === 1 ? 'listing' : 'listings'}`
+                        : 'not yet'}
+                    </span>
+                    <span class="prod__go" aria-hidden="true">
+                      <Icon name="arrow-right" size={13} />
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+
+    <p class="empty mono" data-product-empty hidden>Nothing in the catalogue matches that.</p>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Missing a product?</h2>
+      </div>
+      <p class="muted">
+        The catalogue is hand-maintained in <code>data/products.json</code>. If something obvious is
+        absent, open an issue and it gets added, including when nothing replaces it yet.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--ghost" href="/submit">Submit an app <Icon name="arrow-right" size={14} /></a>
+        <a class="btn btn--ghost" href="/about">How the directory works</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    max-width: 56ch;
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  .toolbar {
+    position: sticky;
+    inset-block-start: 62px;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--s3) var(--s5);
+    padding-block: var(--s3);
+    margin-block-end: var(--s5);
+    background: var(--paper);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .toolbar__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .toolbar__group--grow {
+    flex: 1 1 260px;
+  }
+
+  .toolbar__group--grow :global(.input) {
+    width: 100%;
+    padding-block: 0.28rem;
+    font-size: var(--step--1);
+  }
+
+  .toolbar__count {
+    margin-inline-start: auto;
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .toggle {
+    display: flex;
+    border: 1px solid var(--rule-strong);
+  }
+
+  .toggle__btn {
+    appearance: none;
+    border: 0;
+    border-inline-start: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--ink-3);
+    padding: 0.32rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .toggle__btn:first-child {
+    border-inline-start: 0;
+  }
+
+  .toggle__btn[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .group {
+    margin-block-start: var(--s7);
+  }
+
+  .prod {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 10rem) minmax(0, 1fr) 7rem 1.25rem;
+    align-items: baseline;
+    gap: var(--s4);
+    padding: var(--s4) var(--s3);
+    border-block-end: 1px solid var(--rule-soft);
+    text-decoration: none;
+    transition: background-color 0.14s var(--ease), color 0.14s var(--ease);
+  }
+
+  .prod:first-child {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  .prod:hover,
+  .prod:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .prod:hover .prod__vendor,
+  .prod:hover .prod__apps,
+  .prod:hover .prod__state,
+  .prod:focus-visible .prod__vendor,
+  .prod:focus-visible .prod__apps,
+  .prod:focus-visible .prod__state {
+    color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  .prod__name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.014em;
+  }
+
+  .prod__vendor,
+  .prod__apps,
+  .prod__state {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+    transition: color 0.14s var(--ease);
+  }
+
+  .prod__apps {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .prod__state {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .prod__state[data-yes='true'] {
+    color: var(--accent);
+  }
+
+  .prod__go {
+    color: var(--ink-3);
+    justify-self: end;
+  }
+
+  .empty {
+    padding-block: var(--s7);
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 960px) {
+    .prod {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--s2);
+    }
+    .prod__vendor,
+    .prod__go {
+      display: none;
+    }
+    .prod__apps {
+      grid-column: 1 / -1;
+      white-space: normal;
+    }
+    .toolbar {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-products]');
+  const input = document.querySelector<HTMLInputElement>('[data-product-filter]');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.toggle__btn')];
+  const count = document.querySelector<HTMLElement>('[data-product-count]');
+  const empty = document.querySelector<HTMLElement>('[data-product-empty]');
+
+  if (root) {
+    const rows = [...root.querySelectorAll<HTMLElement>('[data-product]')];
+    const groups = [...root.querySelectorAll<HTMLElement>('[data-group]')];
+    let state = 'all';
+
+    const pad = (value: number) => String(value).padStart(2, '0');
+
+    function apply() {
+      const query = (input?.value ?? '').trim().toLowerCase();
+      let shown = 0;
+      let covered = 0;
+
+      for (const row of rows) {
+        const matchesQuery = !query || (row.dataset.search ?? '').includes(query);
+        const isCovered = row.dataset.covered === 'true';
+        const matchesState =
+          state === 'all' || (state === 'covered' && isCovered) || (state === 'gaps' && !isCovered);
+
+        const visible = matchesQuery && matchesState;
+        row.hidden = !visible;
+        if (visible) {
+          shown += 1;
+          if (isCovered) covered += 1;
+        }
+      }
+
+      for (const group of groups) {
+        group.hidden = ![...group.querySelectorAll<HTMLElement>('[data-product]')].some(
+          (row) => !row.hidden,
+        );
+      }
+
+      if (count) count.textContent = `${pad(shown)} products · ${pad(covered)} replaced`;
+      if (empty) empty.hidden = shown > 0;
+    }
+
+    input?.addEventListener('input', apply);
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        state = button.dataset.state ?? 'all';
+        for (const other of buttons) {
+          other.setAttribute('aria-pressed', String(other === button));
+        }
+        apply();
+      });
+    }
+  }
+</script>

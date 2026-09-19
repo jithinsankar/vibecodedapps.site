@@ -1,0 +1,30 @@
+{
+  "name": "VibePlayer",
+  "tagline": "Fullstack audio player with playlist management and custom audio uploads",
+  "description": "A web-first music streaming player replicating Spotify's playback bar, playlist creator, favorite songs queue, and artist view with Supabase storage and database.\n\nVibecoded with Cursor and v0 in 36 hours. What surprised the maker was how cleanly Supabase real-time storage triggers handled audio transcoding and album art caching.",
+  "url": "https://spotify-clone-supabase.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/spotify-clone",
+  "category": "Fun & Toys",
+  "replaces": [
+    {
+      "product": "Spotify",
+      "kind": "clone",
+      "note": "Host and stream your own high-fidelity FLAC audio library in a familiar Spotify layout."
+    }
+  ],
+  "tags": ["spotify", "music-player", "supabase", "audio-streaming"],
+  "builtWith": ["Cursor", "v0"],
+  "stack": ["Next.js 13.4", "React", "Supabase", "Tailwind CSS", "Stripe"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-09-29",
+  "stars": 1650,
+  "featured": false,
+  "placeholder": false
+}

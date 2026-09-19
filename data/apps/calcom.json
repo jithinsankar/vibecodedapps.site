@@ -1,0 +1,35 @@
+{
+  "name": "Cal.com",
+  "tagline": "Open-source scheduling infrastructure for booking meetings effortlessly",
+  "description": "Self-hostable, API-driven meeting scheduling platform that syncs with Google Calendar, Outlook, and Apple Calendar. Supports time-zone conversion, collective bookings, and custom routing.\n\nVibecoded integrations with Astra and Claude models allow meeting attendees to schedule, reschedule, and resolve agenda conflicts over conversational chat.",
+  "url": "https://cal.com",
+  "repo": "https://github.com/calcom/cal.com",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Calendly",
+      "kind": "alternative",
+      "note": "Open-source meeting infrastructure with public booking links and white-label branding."
+    },
+    {
+      "product": "Google Calendar",
+      "kind": "alternative",
+      "note": "Eliminates back-and-forth email scheduling with personal booking links and team availability slots."
+    }
+  ],
+  "tags": ["calendar", "scheduling", "appointments", "meetings", "open-source"],
+  "builtWith": ["Cursor", "Claude Code"],
+  "stack": ["Next.js", "Prisma", "PostgreSQL", "Tailwind CSS", "tRPC"],
+  "maker": {
+    "name": "Peer Richelsen",
+    "handle": "peerpipe",
+    "url": "https://github.com/calcom",
+    "avatar": "https://github.com/calcom.png"
+  },
+  "status": "live",
+  "pricing": "freemium",
+  "launchedAt": "2025-07-14",
+  "stars": 33800,
+  "featured": true,
+  "placeholder": false
+}

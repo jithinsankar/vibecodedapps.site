@@ -1,0 +1,4 @@
+# Vercel builds the site from source, so the local build output and the dev
+# server's cache have no business being uploaded.
+dist
+.astro

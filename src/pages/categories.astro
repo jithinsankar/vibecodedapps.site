@@ -1,0 +1,141 @@
+---
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categoriesWithCounts, getApps, sortApps } from '../lib/apps';
+import { breadcrumbLd, itemListLd } from '../lib/seo';
+
+const apps = await getApps();
+const categories = categoriesWithCounts(apps);
+const newest = sortApps(apps, 'newest');
+
+const previews = new Map<string, string[]>();
+for (const app of newest) {
+  const list = previews.get(app.category) ?? [];
+  if (list.length < 4) list.push(app.name);
+  previews.set(app.category, list);
+}
+
+const structuredData = [
+  breadcrumbLd([
+    { name: 'Index', path: '/' },
+    { name: 'Sections', path: '/categories/' },
+  ]),
+  itemListLd(
+    'Sections',
+    categories.map((category) => ({ name: category.name, path: `/category/${category.slug}/` })),
+  ),
+];
+---
+
+<BaseLayout
+  title="Sections"
+  description={`Browse ${apps.length} vibecoded apps across ${categories.length} sections.`}
+  structuredData={structuredData}
+>
+  <div class="container">
+    <header class="head">
+      <p class="eyebrow">Contents</p>
+      <h1>Sections</h1>
+      <p class="lede">
+        Every listing belongs to exactly one section, and carries as many tags as it likes. Browsing
+        stays predictable; nothing gets lost between two overlapping buckets.
+      </p>
+    </header>
+
+    <div class="index">
+      {
+        categories.map((category, index) => (
+          <a class="cat" href={`/category/${category.slug}`}>
+            <span class="cat__num numeric">{String(index + 1).padStart(2, '0')}</span>
+            <span class="cat__name">{category.name}</span>
+            <span class="cat__preview mono">{(previews.get(category.name) ?? []).join(' · ')}</span>
+            <span class="cat__count numeric">{String(category.count).padStart(3, '0')}</span>
+            <span class="cat__go" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    max-width: 54ch;
+    margin-block-end: var(--s7);
+  }
+
+  .cat {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 12rem) minmax(0, 1fr) 3rem 1.5rem;
+    align-items: baseline;
+    gap: var(--s4);
+    padding: var(--s4) var(--s3);
+    border-block-end: 1px solid var(--rule-soft);
+    text-decoration: none;
+    transition: background-color 0.14s var(--ease), color 0.14s var(--ease);
+  }
+
+  .cat:first-child {
+    border-block-start: 1px solid var(--ink);
+  }
+
+  .cat:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .cat:hover .cat__preview,
+  .cat:hover .cat__count,
+  .cat:hover .cat__num {
+    color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  .cat__num {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+  }
+
+  .cat__name {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .cat__preview {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cat__count {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+    text-align: right;
+  }
+
+  .cat__go {
+    color: var(--ink-3);
+    justify-self: end;
+  }
+
+  @media (max-width: 780px) {
+    .cat {
+      grid-template-columns: 2rem minmax(0, 1fr) 3rem;
+      row-gap: var(--s2);
+    }
+    .cat__preview {
+      grid-column: 2 / -1;
+      white-space: normal;
+    }
+    .cat__go {
+      display: none;
+    }
+  }
+</style>

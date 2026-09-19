@@ -1,0 +1,507 @@
+---
+import AdSlot from '../../components/AdSlot.astro';
+import AppRow from '../../components/AppRow.astro';
+import AppTile from '../../components/AppTile.astro';
+import Icon from '../../components/Icon.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../config';
+import {
+  categorySlug,
+  formatDate,
+  getApps,
+  relatedApps,
+  type AppView,
+} from '../../lib/apps';
+import { breadcrumbLd, softwareApplicationLd } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const apps = await getApps();
+  return apps.map((app) => ({ params: { slug: app.slug }, props: { app } }));
+}
+
+interface Props {
+  app: AppView;
+}
+
+const { app } = Astro.props;
+const all = await getApps();
+const related = relatedApps(app, all);
+
+const paragraphs = (app.description ?? app.tagline)
+  .split(/\n{2,}/)
+  .map((paragraph) => paragraph.trim())
+  .filter(Boolean);
+
+const statusLabel = { live: 'Live', beta: 'Beta', wip: 'Work in progress', archived: 'Archived' }[
+  app.status
+];
+const pricingLabel = { free: 'Free', freemium: 'Freemium', paid: 'Paid', 'open-source': 'Open source' }[
+  app.pricing
+];
+
+const facts = [
+  { label: 'Section', value: app.category, href: `/category/${categorySlug(app.category)}` },
+  { label: 'Status', value: statusLabel },
+  { label: 'Pricing', value: pricingLabel },
+  { label: 'Launched', value: formatDate(app.launchedAt) },
+  ...(app.stars !== undefined ? [{ label: 'Stars', value: app.stars.toLocaleString('en-US') }] : []),
+  { label: 'Homepage', value: app.host, href: app.url },
+  ...(app.repo ? [{ label: 'Source', value: 'Repository', href: app.repo }] : []),
+];
+
+const editUrl = `${SITE.repo}/edit/main/data/apps/${app.slug}.json`;
+
+/*
+ * The tagline is a full sentence, and pasting it into the title pushed these
+ * pages to 90-110 characters, well past where search results truncate. The
+ * replacement relationship is both shorter and closer to what someone types.
+ */
+const primary = app.replacements[0];
+const title = primary
+  ? `${app.name} · ${primary.kindLabel} of ${primary.product}`
+  : app.name;
+
+// Mirrors the visible breadcrumb below, so the two cannot drift apart.
+const structuredData = [
+  breadcrumbLd([
+    { name: 'Index', path: '/' },
+    { name: app.category, path: `/category/${categorySlug(app.category)}/` },
+    { name: app.name, path: `/apps/${app.slug}/` },
+  ]),
+  softwareApplicationLd(app),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={app.tagline}
+  image={app.screenshots?.[0] ?? app.icon}
+  structuredData={structuredData}
+>
+  <div class="container">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href="/">Index</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/category/${categorySlug(app.category)}`}>{app.category}</a>
+      <span aria-hidden="true">/</span>
+      <span class="muted">{app.name}</span>
+    </nav>
+
+    {
+      app.placeholder && (
+        <p class="notice">
+          <span class="badge">Sample entry</span>
+          <span>
+            This is seed data describing a fictional app. Replace it with a real listing in{' '}
+            <code>data/apps/</code>.
+          </span>
+        </p>
+      )
+    }
+
+    {
+      app.sponsored && (
+        <p class="notice notice--accent">
+          <span class="badge badge--accent">{app.sponsorLabel}</span>
+          <span>
+            This is a paid placement and always carries a label. It does not change how organic
+            listings are ordered. <a href="/sponsor">How sponsorship works</a>
+          </span>
+        </p>
+      )
+    }
+
+    <header class="detail__head">
+      <AppTile name={app.name} initials={app.initials} icon={app.icon} size="lg" />
+
+      <div class="detail__id">
+        <p class="eyebrow">
+          {app.category} · {statusLabel} · {pricingLabel}
+          {app.featured && <span class="detail__pick"> · Editor’s pick</span>}
+        </p>
+        <h1>{app.name}</h1>
+        <p class="lede">{app.tagline}</p>
+
+        <div class="btn-row">
+          <a class="btn btn--accent" href={app.outbound} target="_blank" rel="noopener noreferrer">
+            Visit {app.name} <Icon name="arrow-up-right" size={14} />
+          </a>
+          {
+            app.repo && (
+              <a class="btn btn--ghost" href={app.repo} target="_blank" rel="noopener noreferrer">
+                <Icon name="github" size={14} /> Source
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="stands">
+      <span class="eyebrow">Stands in for</span>
+      {
+        app.replacements.length > 0 ? (
+          <ul class="stands__list">
+            {app.replacements.map((replacement) => (
+              <li class="stands__item">
+                <a class="chip chip--accent" href={`/clone/${replacement.slug}`}>
+                  {replacement.product} <span class="muted">{replacement.kindLabel}</span>
+                </a>
+                {replacement.note && <span class="small muted stands__note">{replacement.note}</span>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="small muted">
+            Nothing obvious. This one is filed as an original, not a replacement.
+          </p>
+        )
+      }
+    </div>
+
+    <div class="detail__body">
+      <article class="prose">
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+
+        {
+          app.screenshots && app.screenshots.length > 0 && (
+            <div class="shots">
+              {app.screenshots.map((shot, index) => (
+                <figure class="shot">
+                  <img
+                    src={shot}
+                    alt={`${app.name} screenshot ${index + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              ))}
+            </div>
+          )
+        }
+
+        <section class="built">
+          <div class="head-rule">
+            <h2 class="head-rule__title">How it was built</h2>
+          </div>
+
+          <div class="built__row">
+            <span class="eyebrow">Vibecoded with</span>
+            <div class="cluster">
+              {app.builtWith.map((tool) => <span class="chip chip--accent">{tool}</span>)}
+            </div>
+          </div>
+
+          {
+            app.stack.length > 0 && (
+              <div class="built__row">
+                <span class="eyebrow">Stack</span>
+                <div class="cluster">
+                  {app.stack.map((item) => <span class="chip">{item}</span>)}
+                </div>
+              </div>
+            )
+          }
+        </section>
+      </article>
+
+      <aside class="aside">
+        <div class="panel">
+          <span class="eyebrow">Facts</span>
+          <dl class="facts">
+            {
+              facts.map((fact) => (
+                <div class="facts__row">
+                  <dt>{fact.label}</dt>
+                  <dd>
+                    {fact.href ? (
+                      <a
+                        href={fact.href}
+                        target={fact.label === 'Homepage' || fact.label === 'Source' ? '_blank' : undefined}
+                        rel={
+                          fact.label === 'Homepage' || fact.label === 'Source'
+                            ? 'noopener noreferrer'
+                            : undefined
+                        }
+                      >
+                        {fact.value}
+                      </a>
+                    ) : (
+                      fact.value
+                    )}
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div class="panel">
+          <span class="eyebrow">Maker</span>
+          <div class="maker">
+            <span class="tile tile--sm" aria-hidden="true">
+              {app.maker.name.slice(0, 1).toUpperCase()}
+            </span>
+            <div>
+              <p class="maker__name">{app.maker.name}</p>
+              {app.maker.handle && <span class="mono muted">{app.maker.handle}</span>}
+            </div>
+          </div>
+          {
+            app.maker.url && (
+              <a class="btn btn--ghost btn--sm" href={app.maker.url} target="_blank" rel="noopener noreferrer">
+                Profile <Icon name="arrow-up-right" size={12} />
+              </a>
+            )
+          }
+        </div>
+
+        {
+          app.tags.length > 0 && (
+            <div class="panel">
+              <span class="eyebrow">Tags</span>
+              <div class="cluster">
+                {app.tags.map((tag) => <span class="chip">{tag}</span>)}
+              </div>
+            </div>
+          )
+        }
+
+        <AdSlot slot="detailAside" />
+
+        <div class="panel panel--quiet">
+          <span class="eyebrow">Something wrong?</span>
+          <p class="small muted">A listing is a single JSON file. Edit it directly.</p>
+          <a class="btn btn--ghost btn--sm" href={editUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="github" size={12} /> Edit listing
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="section">
+          <div class="head-rule">
+            <h2 class="head-rule__title">Also in {app.category}</h2>
+            <span class="head-rule__meta">{related.length} more</span>
+          </div>
+          <div class="index">
+            {related.map((item, index) => (
+              <AppRow app={item} index={index} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    margin-block-end: var(--s5);
+  }
+
+  .crumbs a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--accent);
+  }
+
+  .notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--rule-strong);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    margin-block-end: var(--s5);
+  }
+
+  .notice--accent {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .detail__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--s5);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  .detail__id {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    align-items: flex-start;
+  }
+
+  .detail__id h1 {
+    font-size: var(--step-3);
+    margin-block-start: var(--s1);
+  }
+
+  .detail__pick {
+    color: var(--accent);
+  }
+
+  .detail__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--s8);
+    margin-block-start: var(--s7);
+  }
+
+  /* What it replaces: the first thing a reader should learn. */
+  .stands {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s3) var(--s4);
+    padding-block: var(--s4);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .stands__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+
+  .stands__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s3);
+  }
+
+  .stands__note {
+    max-width: 52ch;
+  }
+
+  .built {
+    margin-block-start: var(--s5);
+  }
+
+  .built__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    margin-block-end: var(--s4);
+  }
+
+  .shots {
+    display: grid;
+    gap: var(--s3);
+    margin-block: var(--s4);
+  }
+
+  .shot {
+    margin: 0;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    background: var(--sunken);
+  }
+
+  .aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s5);
+    position: sticky;
+    inset-block-start: 84px;
+    align-self: start;
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    align-items: flex-start;
+  }
+
+  .facts {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .facts__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s3);
+    padding-block: var(--s2);
+    border-block-end: 1px solid var(--rule-soft);
+    font-size: var(--step--1);
+  }
+
+  .facts__row:first-child {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .facts dd {
+    margin: 0;
+    text-align: right;
+    color: var(--ink);
+  }
+
+  .maker {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+  }
+
+  .maker__name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.014em;
+  }
+
+  .maker .mono {
+    font-size: var(--step--2);
+  }
+
+  @media (max-width: 940px) {
+    .detail__body {
+      grid-template-columns: 1fr;
+      gap: var(--s7);
+    }
+    .aside {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .detail__head {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

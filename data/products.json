@@ -1,0 +1,512 @@
+[
+  {
+    "name": "Procreate",
+    "slug": "procreate",
+    "vendor": "Savage Interactive",
+    "section": "Design",
+    "homepage": "https://procreate.com",
+    "summary": "The iPad painting app most digital illustrators start with.",
+    "gap": "Brush feel and Apple Pencil latency are the entire product. A clone that misses those is a drawing app nobody opens twice.",
+    "aliases": ["ipad drawing", "digital painting", "illustration", "sketching"]
+  },
+  {
+    "name": "Adobe Photoshop",
+    "slug": "adobe-photoshop",
+    "vendor": "Adobe",
+    "section": "Design",
+    "homepage": "https://www.adobe.com/products/photoshop.html",
+    "summary": "The raster editor that the word 'photoshopped' comes from.",
+    "gap": "Nobody wants another layer stack. They want the dozen features they actually open Photoshop for, without the weight or the subscription.",
+    "aliases": ["photoshop", "ps", "photo editing", "image editing", "retouching"]
+  },
+  {
+    "name": "Adobe Illustrator",
+    "slug": "adobe-illustrator",
+    "vendor": "Adobe",
+    "section": "Design",
+    "homepage": "https://www.adobe.com/products/illustrator.html",
+    "summary": "Vector drawing and logo work, and the pen tool people love to hate.",
+    "gap": "Bezier editing is muscle memory for a generation. Matching the pen tool, then making it kinder, is the whole job.",
+    "aliases": ["illustrator", "vector", "logo design", "svg editor", "bezier"]
+  },
+  {
+    "name": "Adobe Lightroom",
+    "slug": "adobe-lightroom",
+    "vendor": "Adobe",
+    "section": "Design",
+    "homepage": "https://www.adobe.com/products/photoshop-lightroom.html",
+    "summary": "Batch photo editing and cataloguing for photographers.",
+    "gap": "The catalogue matters as much as the sliders. Import, cull, sync and export. Get those four fast and the rest follows.",
+    "aliases": ["lightroom", "raw editing", "photo catalogue", "batch editing"]
+  },
+  {
+    "name": "Figma",
+    "slug": "figma",
+    "vendor": "Figma",
+    "section": "Design",
+    "homepage": "https://www.figma.com",
+    "summary": "Browser-based interface design and the multiplayer canvas that ate the category.",
+    "gap": "Multiplayer cursors are the easy part. A clone lives or dies on vector performance and a plugin surface other people can extend.",
+    "aliases": ["figma", "ui design", "interface design", "prototyping", "wireframes"]
+  },
+  {
+    "name": "Canva",
+    "slug": "canva",
+    "vendor": "Canva",
+    "section": "Design",
+    "homepage": "https://www.canva.com",
+    "summary": "Drag-and-drop design for people who are not designers.",
+    "gap": "The templates are the product. A nicer editor with no library of starting points has nothing to sell.",
+    "aliases": ["canva", "graphic design", "templates", "social images", "posters"]
+  },
+  {
+    "name": "Miro",
+    "slug": "miro",
+    "vendor": "Miro",
+    "section": "Design",
+    "homepage": "https://miro.com",
+    "summary": "Infinite whiteboards for workshops and diagramming.",
+    "gap": "Infinite canvas, sticky notes and a facilitator mode. Anything slower than a real corkboard loses the room.",
+    "aliases": ["miro", "whiteboard", "brainstorming", "diagramming", "workshops"]
+  },
+  {
+    "name": "Anima",
+    "slug": "anima",
+    "vendor": "Anima",
+    "section": "Design",
+    "homepage": "https://www.animaapp.com",
+    "summary": "Design-to-code handoff: turn frames into front-end markup.",
+    "gap": "The generated markup has to be something a developer keeps. Anything that gets thrown away after review is a toy.",
+    "aliases": ["design to code", "handoff", "figma to html", "codegen"]
+  },
+  {
+    "name": "Squarespace",
+    "slug": "squarespace",
+    "vendor": "Squarespace",
+    "section": "Design",
+    "homepage": "https://www.squarespace.com",
+    "summary": "Template-driven sites for people who want to look professional quickly.",
+    "gap": "Taste in the defaults. The value is the template, the type pairing, and the fact that nothing needs configuring.",
+    "aliases": ["squarespace", "website builder", "portfolio site", "small business site"]
+  },
+  {
+    "name": "Webflow",
+    "slug": "webflow",
+    "vendor": "Webflow",
+    "section": "Design",
+    "homepage": "https://webflow.com",
+    "summary": "Visual building that exports real, production HTML and CSS.",
+    "gap": "The output has to be clean enough that a developer accepts it. Visual builders die on markup people are embarrassed to ship.",
+    "aliases": ["webflow", "no code website", "visual website builder", "landing page builder"]
+  },
+  {
+    "name": "Adobe Premiere Pro",
+    "slug": "adobe-premiere-pro",
+    "vendor": "Adobe",
+    "section": "Media",
+    "homepage": "https://www.adobe.com/products/premiere.html",
+    "summary": "The default timeline editor for video that ships on a deadline.",
+    "gap": "Timeline responsiveness on real footage is the bar. Proxy workflows and codec support matter more than a prettier UI.",
+    "aliases": ["premiere", "video editing", "video editor", "timeline editing", "youtube editing"]
+  },
+  {
+    "name": "Logic Pro",
+    "slug": "logic-pro",
+    "vendor": "Apple",
+    "section": "Media",
+    "homepage": "https://www.apple.com/logic-pro/",
+    "summary": "Apple's full studio: recording, MIDI, mixing and mastering.",
+    "gap": "You cannot fake a sampler or a mixing bus. A clone needs one workflow done deeply (tracking, or beatmaking), not a bit of everything.",
+    "aliases": ["logic", "daw", "music production", "beatmaking", "recording studio"]
+  },
+  {
+    "name": "Blender",
+    "slug": "blender",
+    "vendor": "Blender Foundation",
+    "section": "Media",
+    "homepage": "https://www.blender.org",
+    "summary": "Free 3D modelling, animation, rendering and compositing.",
+    "gap": "Blender is already free, so a clone has to win on approachability: a modelling tool a beginner can finish something in.",
+    "aliases": ["blender", "3d modelling", "3d modeling", "cad", "animation", "rendering"]
+  },
+  {
+    "name": "Notion",
+    "slug": "notion",
+    "vendor": "Notion Labs",
+    "section": "Productivity",
+    "homepage": "https://www.notion.so",
+    "summary": "Docs, databases and wikis in one workspace.",
+    "gap": "Flexible blocks are easy; a database engine that does not stutter at ten thousand rows is not. Speed is the differentiator.",
+    "aliases": ["notion", "wiki", "docs", "second brain", "workspace", "database notes"]
+  },
+  {
+    "name": "Obsidian",
+    "slug": "obsidian",
+    "vendor": "Obsidian",
+    "section": "Productivity",
+    "homepage": "https://obsidian.md",
+    "summary": "Local-first markdown notes with backlinks and a plugin ecosystem.",
+    "gap": "Plain files on disk are the selling point. Any clone that puts your notes in someone else's database has lost the argument.",
+    "aliases": ["obsidian", "markdown notes", "knowledge base", "roam", "zettelkasten", "backlinks"]
+  },
+  {
+    "name": "Evernote",
+    "slug": "evernote",
+    "vendor": "Bending Spoons",
+    "section": "Productivity",
+    "homepage": "https://evernote.com",
+    "summary": "The notebook app that defined web clipping.",
+    "gap": "Clipping and search across years of notes. A clone that cannot import an existing archive is a notebook nobody can move into.",
+    "aliases": ["evernote", "note taking", "web clipper", "notebook"]
+  },
+  {
+    "name": "Todoist",
+    "slug": "todoist",
+    "vendor": "Doist",
+    "section": "Productivity",
+    "homepage": "https://todoist.com",
+    "summary": "Fast, keyboard-driven task capture and projects.",
+    "gap": "Capture speed and a natural-language parser. If adding a task takes longer than typing it into a text file, it is already dead.",
+    "aliases": ["todoist", "to do list", "task manager", "gtd", "checklist"]
+  },
+  {
+    "name": "Google Sheets",
+    "slug": "google-sheets",
+    "vendor": "Google",
+    "section": "Productivity",
+    "homepage": "https://sheets.google.com",
+    "summary": "The spreadsheet everyone actually collaborates in.",
+    "gap": "Formulas plus sharing, with real-time presence that does not fight you. Most clones underestimate the formula surface.",
+    "aliases": ["google sheets", "spreadsheet", "collaborative spreadsheet", "excel alternative"]
+  },
+  {
+    "name": "Microsoft Excel",
+    "slug": "microsoft-excel",
+    "vendor": "Microsoft",
+    "section": "Productivity",
+    "homepage": "https://www.microsoft.com/microsoft-365/excel",
+    "summary": "The spreadsheet that runs a surprising amount of the world.",
+    "gap": "Pivot tables and keyboard shortcuts. Nobody leaves Excel for a nicer grid; they leave for something that does one hard thing well.",
+    "aliases": ["excel", "spreadsheet", "pivot table", "financial model", "csv"]
+  },
+  {
+    "name": "Google Calendar",
+    "slug": "google-calendar",
+    "vendor": "Google",
+    "section": "Productivity",
+    "homepage": "https://calendar.google.com",
+    "summary": "The calendar most people's week actually lives in.",
+    "gap": "Reading and writing somebody else's calendar reliably is the hard part. The scheduling logic is the product.",
+    "aliases": ["google calendar", "calendar", "events", "daily schedule", "agenda"]
+  },
+  {
+    "name": "1Password",
+    "slug": "1password",
+    "vendor": "AgileBits",
+    "section": "Productivity",
+    "homepage": "https://1password.com",
+    "summary": "Password manager with a serious security reputation.",
+    "gap": "Crypto is the easiest part to get right and the easiest to get catastrophically wrong. No credible security story means it is a liability.",
+    "aliases": ["1password", "password manager", "passwords", "vault", "secrets"]
+  },
+  {
+    "name": "Zoom",
+    "slug": "zoom",
+    "vendor": "Zoom",
+    "section": "Productivity",
+    "homepage": "https://zoom.us",
+    "summary": "Video meetings, and the verb for them.",
+    "gap": "Call quality on a bad connection. The grid, the chat and the reactions are decoration on top of reliable audio.",
+    "aliases": ["zoom", "video call", "meetings", "video conferencing", "screen share"]
+  },
+  {
+    "name": "Slack",
+    "slug": "slack",
+    "vendor": "Salesforce",
+    "section": "Productivity",
+    "homepage": "https://slack.com",
+    "summary": "Channel-based chat for teams.",
+    "gap": "A clone has to be somewhere people already are, or replace email outright. Notification discipline is the real feature.",
+    "aliases": ["slack", "team chat", "messaging", "discord for work", "channels"]
+  },
+  {
+    "name": "Jira",
+    "slug": "jira",
+    "vendor": "Atlassian",
+    "section": "Productivity",
+    "homepage": "https://www.atlassian.com/software/jira",
+    "summary": "Issue tracking and sprint planning for software teams.",
+    "gap": "Jira's weakness is its own flexibility. A clone that picks one workflow and refuses to be configured is a genuine improvement.",
+    "aliases": ["jira", "issue tracker", "sprint planning", "kanban", "backlog", "tickets"]
+  },
+  {
+    "name": "Toggl Track",
+    "slug": "toggl-track",
+    "vendor": "Toggl",
+    "section": "Productivity",
+    "homepage": "https://toggl.com/track/",
+    "summary": "One-button time tracking and the reports that come out of it.",
+    "gap": "Starting a timer has to cost nothing. Every clone that asks you to categorise first has already lost the day.",
+    "aliases": ["toggl", "time tracking", "timesheet", "billable hours", "pomodoro"]
+  },
+  {
+    "name": "Vercel",
+    "slug": "vercel",
+    "vendor": "Vercel",
+    "section": "Developer Tools",
+    "homepage": "https://vercel.com",
+    "summary": "Hosting and preview deployments for front-end teams.",
+    "gap": "A preview per branch and a deploy that is boring. Git integration and cold-start speed are the whole pitch.",
+    "aliases": ["vercel", "hosting", "deploy", "preview environments", "netlify", "netlify alternative"]
+  },
+  {
+    "name": "Sentry",
+    "slug": "sentry",
+    "vendor": "Sentry",
+    "section": "Developer Tools",
+    "homepage": "https://sentry.io",
+    "summary": "Error and performance monitoring for shipped apps.",
+    "gap": "Grouping errors sensibly is the hard part. A clone with noisy alerts or fake-looking stack traces makes things worse.",
+    "aliases": ["sentry", "error tracking", "crash reporting", "observability", "monitoring"]
+  },
+  {
+    "name": "Discourse",
+    "slug": "discourse",
+    "vendor": "Discourse",
+    "section": "Community",
+    "homepage": "https://www.discourse.org",
+    "summary": "Self-hosted forum software for communities that outlive a chat app.",
+    "gap": "Threading, moderation and search that survives a decade of posts. Moderation tools are the unglamorous core.",
+    "aliases": ["discourse", "forum", "community", "reddit alternative", "message board", "phpbb"]
+  },
+  {
+    "name": "WordPress",
+    "slug": "wordpress",
+    "vendor": "WordPress Foundation",
+    "section": "Utilities",
+    "homepage": "https://wordpress.org",
+    "summary": "The CMS behind a large share of the web, themes and plugins included.",
+    "gap": "Plugins are the moat and the mess. A clone that ships the twenty plugins everyone installs, pre-wired, is immediately useful.",
+    "aliases": ["wordpress", "cms", "blog", "website", "php", "blogging"]
+  },
+  {
+    "name": "Shopify",
+    "slug": "shopify",
+    "vendor": "Shopify",
+    "section": "Finance",
+    "homepage": "https://www.shopify.com",
+    "summary": "Hosted storefronts: catalogue, checkout, payments and shipping.",
+    "gap": "Checkout, tax and payments. A pretty storefront is easy; being the merchant of record is not.",
+    "aliases": ["shopify", "ecommerce", "online store", "checkout", "shopping cart", "woocommerce"]
+  },
+  {
+    "name": "QuickBooks",
+    "slug": "quickbooks",
+    "vendor": "Intuit",
+    "section": "Finance",
+    "homepage": "https://quickbooks.intuit.com",
+    "summary": "Bookkeeping for small businesses and the accountants who file for them.",
+    "gap": "Accountants have to accept the output. A clone that cannot export a standard ledger format is a hobby project.",
+    "aliases": ["quickbooks", "bookkeeping", "accounting", "invoicing", "expenses", "vat"]
+  },
+  {
+    "name": "YNAB",
+    "slug": "ynab",
+    "vendor": "YNAB",
+    "section": "Finance",
+    "homepage": "https://www.ynab.com",
+    "summary": "Envelope-method budgeting that people stay loyal to for years.",
+    "gap": "It is a method, not a UI. A clone that copies the screens and drops the philosophy has nothing left.",
+    "aliases": ["ynab", "budgeting", "envelope budget", "personal finance", "mint alternative"]
+  },
+  {
+    "name": "MyFitnessPal",
+    "slug": "myfitnesspal",
+    "vendor": "MyFitnessPal",
+    "section": "Health",
+    "homepage": "https://www.myfitnesspal.com",
+    "summary": "Calorie and macro tracking with a giant food database.",
+    "gap": "The food database is the product. Logging has to take seconds or nobody keeps it up past week two.",
+    "aliases": ["myfitnesspal", "calorie counter", "macro tracking", "diet", "food log", "nutrition"]
+  },
+  {
+    "name": "Habitica",
+    "slug": "habitica",
+    "vendor": "Habitica",
+    "section": "Health",
+    "homepage": "https://habitica.com",
+    "summary": "Habit tracking turned into a role-playing game.",
+    "gap": "Habit apps live or die on the reminder and the streak. The game layer is optional; the nudge is not.",
+    "aliases": ["habitica", "habit tracker", "streaks", "routine", "daily habits"]
+  },
+  {
+    "name": "Duolingo",
+    "slug": "duolingo",
+    "vendor": "Duolingo",
+    "section": "Education",
+    "homepage": "https://www.duolingo.com",
+    "summary": "Bite-sized language lessons with a notoriously sticky streak.",
+    "gap": "The curriculum and the guilt. Streak mechanics are easy to copy and hard to make kind.",
+    "aliases": ["duolingo", "language learning", "spanish", "vocabulary", "flashcards"]
+  },
+  {
+    "name": "Anki",
+    "slug": "anki",
+    "vendor": "Anki",
+    "section": "Education",
+    "homepage": "https://apps.ankiweb.net",
+    "summary": "Spaced repetition for people studying something genuinely hard.",
+    "gap": "The scheduling algorithm and syncing between devices. Prettier decks do not make anyone remember more.",
+    "aliases": ["anki", "spaced repetition", "flashcards", "memorisation", "med school", "study"]
+  },
+  {
+    "name": "Spotify",
+    "slug": "spotify",
+    "vendor": "Spotify",
+    "section": "Fun & Toys",
+    "homepage": "https://www.spotify.com",
+    "summary": "Streaming music, playlists and the recommendations that made it huge.",
+    "gap": "Licensing, which is exactly why nobody vibecodes a Spotify. A clone that plays your own files and recommends differently is realistic.",
+    "aliases": ["spotify", "music streaming", "playlists", "music player", "podcasts"]
+  },
+  {
+    "name": "Winamp",
+    "slug": "winamp",
+    "vendor": "Winamp",
+    "section": "Fun & Toys",
+    "homepage": "https://www.winamp.com",
+    "summary": "The music player people kept open purely for the visualiser.",
+    "gap": "Nostalgia plus audio reactivity. It is a toy, so it only has to be fun once, which is a low bar and a high bar at the same time.",
+    "aliases": ["winamp", "visualiser", "visualizer", "music visualiser", "milkdrop"]
+  },
+  {
+    "name": "Wordle",
+    "slug": "wordle",
+    "vendor": "The New York Times",
+    "section": "Games",
+    "homepage": "https://www.nytimes.com/games/wordle",
+    "summary": "One word puzzle a day, and the group chat it spawned.",
+    "gap": "The daily constraint is the whole design. A clone with infinite puzzles and no shared reset loses the ritual.",
+    "aliases": ["wordle", "daily puzzle", "word game", "word puzzle", "guess the word"]
+  },
+  {
+    "name": "Google Photos",
+    "slug": "google-photos",
+    "vendor": "Google",
+    "section": "Utilities",
+    "homepage": "https://photos.google.com",
+    "summary": "Photo backup, search and sharing across every device you own.",
+    "gap": "Search that works without you tagging anything. Local-first storage is the obvious differentiator.",
+    "aliases": ["google photos", "photo backup", "photo search", "photo library", "icloud photos"]
+  },
+  {
+    "name": "WeTransfer",
+    "slug": "wetransfer",
+    "vendor": "WeTransfer",
+    "section": "Utilities",
+    "homepage": "https://wetransfer.com",
+    "summary": "Send big files without anyone making an account.",
+    "gap": "Three clicks and a link. Anything that asks you to sign up has already lost to the thing it is replacing.",
+    "aliases": ["wetransfer", "send large files", "file transfer", "file sharing", "dropbox transfer"]
+  },
+  {
+    "name": "Dropbox",
+    "slug": "dropbox",
+    "vendor": "Dropbox",
+    "section": "Utilities",
+    "homepage": "https://www.dropbox.com",
+    "summary": "File sync that just works, on every machine you own.",
+    "gap": "Conflict-free sync is genuinely hard. A clone that silently loses one file is worse than no clone at all.",
+    "aliases": ["dropbox", "file sync", "cloud storage", "google drive", "icloud drive"]
+  },
+  {
+    "name": "Mailchimp",
+    "slug": "mailchimp",
+    "vendor": "Intuit",
+    "section": "Marketing",
+    "homepage": "https://mailchimp.com",
+    "summary": "Email lists, campaigns and the automations that drip out of them.",
+    "gap": "Deliverability. A clone sending from a random IP lands in spam. The unsexy infrastructure is the product.",
+    "aliases": ["mailchimp", "email marketing", "newsletter", "email list", "campaigns"]
+  },
+  {
+    "name": "Buffer",
+    "slug": "buffer",
+    "vendor": "Buffer",
+    "section": "Marketing",
+    "homepage": "https://buffer.com",
+    "summary": "Plan and publish social posts across several networks.",
+    "gap": "The rules change constantly and API access is the moat. A clone that handles one network properly beats a broken five.",
+    "aliases": ["buffer", "social media scheduling", "twitter scheduling", "post scheduler", "hootsuite"]
+  },
+  {
+    "name": "Beamer",
+    "slug": "beamer",
+    "vendor": "Beamer",
+    "section": "Marketing",
+    "homepage": "https://www.getbeamer.com",
+    "summary": "In-app changelogs and announcements, with reactions from users.",
+    "gap": "It has to sit inside the product, not next to it. A clone that is just a blog with a date field is a blog.",
+    "aliases": ["beamer", "changelog", "release notes", "product updates", "what's new"]
+  },
+  {
+    "name": "Google Analytics",
+    "slug": "google-analytics",
+    "vendor": "Google",
+    "section": "Marketing",
+    "homepage": "https://analytics.google.com",
+    "summary": "Web traffic analytics, and the consent banner that comes with them.",
+    "gap": "Cookie-free, privacy-respecting stats that load in two kilobytes. The backlash is the opportunity.",
+    "aliases": ["google analytics", "analytics", "web stats", "traffic", "plausible", "privacy analytics"]
+  },
+  {
+    "name": "Linear",
+    "slug": "linear",
+    "vendor": "Linear Orbit",
+    "section": "Productivity",
+    "homepage": "https://linear.app",
+    "summary": "The keyboard-driven issue tracker beloved by modern software teams.",
+    "gap": "The shortcuts and 60fps keyboard navigation are the product. A clone with laggy modals or mouse-first menus is just a slow issue tracker.",
+    "aliases": ["linear", "linear app", "issue tracking", "project management", "backlog", "jira alternative"]
+  },
+  {
+    "name": "Calendly",
+    "slug": "calendly",
+    "vendor": "Calendly",
+    "section": "Productivity",
+    "homepage": "https://calendly.com",
+    "summary": "One-click meeting scheduling links that eliminate email back-and-forth.",
+    "gap": "Time zone math and bi-directional calendar conflict resolution. If two people can book the same slot, the tool is a liability.",
+    "aliases": ["calendly", "scheduling", "meeting booking", "appointment scheduler", "booking link"]
+  },
+  {
+    "name": "Trello",
+    "slug": "trello",
+    "vendor": "Atlassian",
+    "section": "Productivity",
+    "homepage": "https://trello.com",
+    "summary": "Visual drag-and-drop Kanban boards for organizing anything.",
+    "gap": "Frictionless card dragging and multi-user sync. If moving a card stutters or drops mid-drag, the visual metaphor falls apart.",
+    "aliases": ["trello", "kanban", "boards", "card organizer", "task board"]
+  },
+  {
+    "name": "Loom",
+    "slug": "loom",
+    "vendor": "Atlassian",
+    "section": "Media",
+    "homepage": "https://www.loom.com",
+    "summary": "Quick screen and webcam video recording with instant shareable links.",
+    "gap": "Instant encoding and zero-wait uploading. If the creator has to wait 3 minutes for video processing after hitting stop, the moment is gone.",
+    "aliases": ["loom", "screen recorder", "video messaging", "screen share", "webcam recording"]
+  },
+  {
+    "name": "Perplexity",
+    "slug": "perplexity",
+    "vendor": "Perplexity AI",
+    "section": "Productivity",
+    "homepage": "https://www.perplexity.ai",
+    "summary": "Conversational answer engine with real-time web search and citation cards.",
+    "gap": "Live citation grounding and streaming latency. A search clone that hallucinates dead links or takes ten seconds to start streaming loses the user.",
+    "aliases": ["perplexity", "ai search", "answer engine", "search engine", "rag"]
+  }
+]

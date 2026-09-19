@@ -1,0 +1,30 @@
+{
+  "name": "Pingvin Share",
+  "tagline": "Privacy-first self-hosted file sharing with expiring links and password locks",
+  "description": "An open-source WeTransfer alternative that lets you upload large files and share them via clean, expiring links. Features password protection, download limits, reverse proxy support, and ClamAV scanning.\n\nVibecoded with Bolt.new and Claude Code to give users a zero-friction drag-and-drop experience without forcing recipients to create accounts.",
+  "url": "https://pingvin-share.dev",
+  "repo": "https://github.com/stonith404/pingvin-share",
+  "category": "Utilities",
+  "replaces": [
+    {
+      "product": "WeTransfer",
+      "kind": "alternative",
+      "note": "Send large gigabyte files with expiring links directly from your own storage without bandwidth caps."
+    }
+  ],
+  "tags": ["wetransfer", "file-sharing", "self-hosted", "expiring-links", "privacy"],
+  "builtWith": ["Bolt.new", "Claude Code"],
+  "stack": ["Next.js", "NestJS", "Prisma", "Tailwind CSS", "Docker"],
+  "maker": {
+    "name": "Eli Rykov",
+    "handle": "stonith404",
+    "url": "https://github.com/stonith404",
+    "avatar": "https://github.com/stonith404.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-09-02",
+  "stars": 7900,
+  "featured": true,
+  "placeholder": false
+}

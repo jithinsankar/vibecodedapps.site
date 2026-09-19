@@ -1,0 +1,213 @@
+---
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+import { getApps, getStats } from '../lib/apps';
+
+const apps = await getApps();
+const { incumbents, covered } = getStats(apps);
+const products = incumbents;
+
+const principles = [
+  {
+    title: 'One question, answered either way',
+    body: 'Every page asks "is there a vibecoded clone of X?" and answers it: yes with the alternatives, or not yet with what a clone would have to get right. A gap is a useful answer, so gaps get pages too.',
+  },
+  {
+    title: 'The vocabulary is curated',
+    body: 'Listings can only claim a product that already exists in the catalogue. That single constraint is what stops a directory from dissolving into ten thousand near-identical tags.',
+  },
+  {
+    title: 'The data is the project',
+    body: 'Listings are plain JSON files in git. Anyone can fork the repository, add a file and open a pull request. No account on this site, no dashboard, no database.',
+  },
+  {
+    title: 'Paid is always labelled',
+    body: 'If money ever changes hands for placement, the row says so, the placement expires on its own, and it never displaces organic results.',
+  },
+];
+
+const steps = [
+  { label: 'Pull request', detail: 'A listing lands in the repository, saying what it replaces.' },
+  { label: 'Validation', detail: 'Zod checks the file and the product, on every push.' },
+  { label: 'Build', detail: 'Astro turns the listings into 80-odd static pages.' },
+  { label: 'Serve', detail: 'Files on a CDN. No runtime, no database, no API keys.' },
+];
+
+const stack = [
+  { name: 'Astro', note: 'static output' },
+  { name: 'Zod', note: 'one shared schema' },
+  { name: 'Git', note: 'the actual database' },
+  { name: 'JSON', note: 'generated at build' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="How this directory works: git-backed listings, one shared schema, static output, no tracking."
+>
+  <div class="container container--narrow">
+    <header class="head">
+      <p class="eyebrow">About</p>
+      <h1>Answers, not a pile of links.</h1>
+      <p class="lede">
+        {apps.length} apps built with AI coding tools, filed against the {products} well-known
+        products they replace. {covered} of those products have an answer today. The rest say so
+        plainly, and wait.
+      </p>
+    </header>
+
+    <section class="section--tight">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Principles</h2>
+        <span class="head-rule__meta">Four rules</span>
+      </div>
+      <ol class="list">
+        {
+          principles.map((item, index) => (
+            <li>
+              <span class="numeric list__num">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="list__title">{item.title}</h3>
+                <p class="muted">{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">From pull request to page</h2>
+      </div>
+      <ol class="list list--steps">
+        {
+          steps.map((step, index) => (
+            <li>
+              <span class="numeric list__num">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="list__title">{step.label}</h3>
+                <p class="muted small">{step.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Built with</h2>
+      </div>
+      <div class="cluster">
+        {
+          stack.map((item) => (
+            <span class="chip">
+              {item.name} <span class="muted">{item.note}</span>
+            </span>
+          ))
+        }
+      </div>
+      <p class="muted small" style="margin-block-start: var(--s4)">
+        Client-side JavaScript is a couple of kilobytes: a theme switch, a filter and a copy button.
+        Everything else is HTML and CSS.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Follow or fork</h2>
+        <span class="head-rule__meta">MIT</span>
+      </div>
+      <p class="muted">
+        New listings go out on the RSS feed. The whole directory lives in the repository, and it is
+        MIT licensed, so you can fork it and point it at a different niche.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--ghost btn--sm" href="/rss.xml">
+          <Icon name="rss" size={12} /> RSS
+        </a>
+        <a class="btn btn--ghost btn--sm" href={SITE.repo} target="_blank" rel="noopener noreferrer">
+          <Icon name="github" size={12} /> Fork the repo
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Run your own</h2>
+      </div>
+      <p class="muted">
+        It is a static site, so hosting is a folder of files. Point it at a niche: vibecoded iOS
+        apps, vibecoded games, your own town, and change one value in{' '}
+        <code>src/config.ts</code>.
+      </p>
+      <pre><code>{`git clone ${SITE.repo}.git
+cd directory
+npm install
+npm run dev     # http://localhost:4321
+npm run build   # static output in dist/`}</code></pre>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Contact</h2>
+      </div>
+      <p class="muted">
+        Corrections, removals and takedowns: open an issue in the repository and it gets handled. For
+        anything else, <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--s4);
+    align-items: baseline;
+    padding-block: var(--s4);
+    border-block-end: 1px solid var(--rule-soft);
+  }
+
+  .list li:first-child {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  .list__num {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+  }
+
+  .list__title {
+    font-size: var(--step-1);
+    letter-spacing: -0.014em;
+    margin-block-end: var(--s1);
+  }
+
+  .list--steps .list__title {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+</style>

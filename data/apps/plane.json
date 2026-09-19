@@ -1,0 +1,35 @@
+{
+  "name": "Plane",
+  "tagline": "Modern open-source project and sprint tracker for agile engineering teams",
+  "description": "A sleek, keyboard-driven alternative to Jira and Linear. Organise issues, cycle sprints, track epics, and manage pages with custom workflows and analytics.\n\nIncludes native AI triage agents and MCP connectors to ingest bug reports from Discord and GitHub issues automatically.",
+  "url": "https://plane.so",
+  "repo": "https://github.com/makeplane/plane",
+  "category": "Productivity",
+  "replaces": [
+    {
+      "product": "Linear",
+      "kind": "alternative",
+      "note": "Sub-second issue creation and keyboard shortcuts with self-hosted freedom."
+    },
+    {
+      "product": "Jira",
+      "kind": "alternative",
+      "note": "Cleans up Jira's configuration bloat with instant keyboard shortcuts and fast sprint boards."
+    }
+  ],
+  "tags": ["jira", "issue-tracker", "sprint", "kanban", "agile"],
+  "builtWith": ["Cursor", "Devin"],
+  "stack": ["Next.js", "Django", "TypeScript", "PostgreSQL", "Redis"],
+  "maker": {
+    "name": "Vihar Kurama",
+    "handle": "vihar",
+    "url": "https://github.com/makeplane",
+    "avatar": "https://github.com/makeplane.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-08-20",
+  "stars": 32100,
+  "featured": true,
+  "placeholder": false
+}

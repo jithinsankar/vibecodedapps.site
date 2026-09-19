@@ -1,0 +1,254 @@
+---
+import Icon from '../components/Icon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SPONSORSHIP } from '../config';
+import { getApps } from '../lib/apps';
+
+const apps = await getApps();
+const isOpen = SPONSORSHIP.enabled;
+const slots = Math.max(1, Math.round(apps.length / 12));
+
+const rules = [
+  'Every paid placement is labelled on the row, next to the app name. No exceptions, no “partner content” euphemisms.',
+  'Placements expire on a date stored in the listing itself. If nobody renews, the label disappears on its own.',
+  'The index is ordered by launch date. Sponsorship never outranks it.',
+  'A placement must belong to the section it sits in. You cannot buy your way into a topic you have nothing to do with.',
+  'No pop-ups, no interstitials, no autoplaying video, and no tracking pixels beyond the slot you bought.',
+  'Editorial picks stay editorial. Buying a placement does not buy the description.',
+];
+
+const interestUrl = `${SITE.repo}/issues/new?title=${encodeURIComponent('Sponsorship enquiry')}&labels=sponsorship`;
+---
+
+<BaseLayout
+  title="Sponsorship"
+  description="How paid placement works here: labelled, time-boxed, and never a ranking shortcut."
+>
+  <div class="container container--narrow">
+    <header class="head">
+      <p class="eyebrow">Sponsorship</p>
+      <h1>{isOpen ? 'Get your app in the spotlight' : 'Paid placement, not yet for sale'}</h1>
+      <p class="lede">
+        This directory is free to use and free to contribute to. Paid placement exists to cover the
+        domain and the hosting, and it comes with rules. A directory that hides its sponsors is not
+        worth reading.
+      </p>
+    </header>
+
+    {
+      !isOpen && (
+        <p class="notice">
+          <span class="badge">Closed</span>
+          <span>
+            The plumbing is in place (the schema, the labelled row treatment, the expiry dates), but
+            nothing is for sale while the directory fills up. To hear when slots open, open an
+            interest issue or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+          </span>
+        </p>
+      )
+    }
+
+    <section class="section--tight">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Placements</h2>
+        <span class="head-rule__meta">{slots} slots in total</span>
+      </div>
+
+      <div class="tiers">
+        {
+          SPONSORSHIP.tiers.map((tier) => (
+            <div class:list={['tier', { 'tier--highlight': 'highlighted' in tier && tier.highlighted }]}>
+              <div class="tier__head">
+                <h3 class="tier__name">{tier.name}</h3>
+                <span class="tier__price numeric">{tier.price}</span>
+              </div>
+              <span class="eyebrow">per {tier.cadence}</span>
+              <ul class="tier__perks">
+                {tier.perks.map((perk) => <li>{perk}</li>)}
+              </ul>
+              <a
+                class="btn btn--ghost btn--sm tier__cta"
+                href={
+                  isOpen
+                    ? `mailto:${SITE.email}?subject=${encodeURIComponent(`Sponsorship: ${tier.name}`)}`
+                    : interestUrl
+                }
+                target={isOpen ? undefined : '_blank'}
+                rel={isOpen ? undefined : 'noopener noreferrer'}
+              >
+                {isOpen ? 'Book this slot' : 'Register interest'}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="muted small" style="margin-block-start: var(--s5)">
+        Inventory is deliberately tiny ({slots} spotlight slots), so the directory never turns into
+        an ad page.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">The rules</h2>
+        <span class="head-rule__meta">Non-negotiable</span>
+      </div>
+      <ul class="rules">
+        {rules.map((rule) => <li>{rule}</li>)}
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Why not just run display ads?</h2>
+      </div>
+      <p class="muted">
+        Because they would not survive contact with this design. A directory earns attention by being
+        trustworthy, and cookie-based ad networks trade exactly that away. Paid listings are the only
+        commercial model this project is prepared to run, and they are opt-in, labelled and
+        removable.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="head-rule">
+        <h2 class="head-rule__title">Getting listed for free</h2>
+      </div>
+      <p class="muted">Sponsorship is never required. Listing an app costs nothing, always.</p>
+      <div class="btn-row">
+        <a class="btn" href="/submit">Submit an app <Icon name="arrow-right" size={14} /></a>
+        <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding-block-end: var(--s6);
+    border-block-end: 1px solid var(--ink);
+  }
+
+  .notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s3) var(--s4);
+    margin-block-start: var(--s6);
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+
+  .tiers {
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--ink);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+
+  .tier {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s3);
+    padding: var(--s5) var(--s4);
+    border-inline-start: 1px solid var(--rule);
+  }
+
+  .tier:first-child {
+    border-inline-start: 0;
+  }
+
+  .tier--highlight {
+    background: var(--accent-soft);
+  }
+
+  .tier__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s3);
+    width: 100%;
+  }
+
+  .tier__name {
+    font-size: var(--step-2);
+  }
+
+  .tier__price {
+    color: var(--ink);
+    font-size: var(--step--1);
+  }
+
+  .tier__perks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    flex: 1;
+  }
+
+  .tier__perks li {
+    padding-inline-start: 1.1rem;
+    position: relative;
+  }
+
+  .tier__perks li::before {
+    content: '•';
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--accent);
+  }
+
+  .tier__cta {
+    margin-block-start: var(--s2);
+  }
+
+  .rules {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rules li {
+    padding: var(--s4) 0 var(--s4) 2.25rem;
+    border-block-end: 1px solid var(--rule-soft);
+    color: var(--ink-2);
+    position: relative;
+  }
+
+  .rules li:first-child {
+    border-block-start: 1px solid var(--rule-soft);
+  }
+
+  .rules li::before {
+    content: '§';
+    position: absolute;
+    inset-inline-start: 0;
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .tier {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--rule);
+    }
+    .tier:first-child {
+      border-block-start: 0;
+    }
+  }
+</style>

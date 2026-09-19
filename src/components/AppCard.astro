@@ -1,0 +1,150 @@
+---
+/**
+ * Spotlight card: the larger, editorial treatment used for paid placements and
+ * editor's picks at the top of the directory. Visually distinct from the index
+ * rows on purpose: nothing here is masquerading as an organic listing.
+ */
+import AppTile from './AppTile.astro';
+import Icon from './Icon.astro';
+import { type AppView } from '../lib/apps';
+
+interface Props {
+  app: AppView;
+}
+
+const { app } = Astro.props;
+---
+
+<article class:list={['spot', { 'spot--sponsored': app.sponsored }]}>
+
+  <a class="spot__hitbox" href={`/apps/${app.slug}`}>
+    <span class="visually-hidden">{app.name}, {app.tagline}</span>
+  </a>
+
+  <div class="spot__top">
+    <AppTile name={app.name} initials={app.initials} icon={app.icon} />
+    <div>
+      <h3 class="spot__name">{app.name}</h3>
+      <span class="spot__meta">
+        <span class="mono muted small">{app.host}</span>
+        {app.placeholder && <span class="badge">Sample</span>}
+      </span>
+    </div>
+  </div>
+
+  <p class="spot__tagline">{app.tagline}</p>
+
+  <div class="spot__foot">
+    <span class="mono muted small">
+      {(app.sponsored ? app.sponsorLabel : 'Featured')} · {app.builtWith.join(', ')}
+    </span>
+    <a class="spot__visit mono" href={app.outbound} target="_blank" rel="noopener noreferrer">
+      Visit <Icon name="arrow-up-right" size={13} />
+    </a>
+  </div>
+</article>
+
+<style>
+  .spot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding: var(--s5) var(--s4) var(--s4);
+    border: 1px solid var(--ink);
+    border-radius: var(--r);
+    background: var(--raised);
+    transition: background-color 0.16s var(--ease), color 0.16s var(--ease);
+  }
+
+  /* Coloured edge, like a printed card with a painted edge. */
+  .spot::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+
+  .spot--sponsored::before {
+    background: var(--accent);
+  }
+
+  .spot:hover,
+  .spot:focus-within {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .spot:hover .spot__tagline,
+  .spot:hover .muted,
+  .spot:focus-within .spot__tagline,
+  .spot:focus-within .muted {
+    color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  .spot__hitbox {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  .spot__hitbox:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .spot__top {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+  }
+
+  .spot__name {
+    font-size: var(--step-2);
+    letter-spacing: -0.018em;
+  }
+
+  /* Host and the sample marker sit together, and wrap together on a narrow card. */
+  .spot__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    flex-wrap: wrap;
+  }
+
+  .spot__tagline {
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--ink-2);
+    flex: 1;
+    transition: color 0.16s var(--ease);
+  }
+
+  .spot__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+    padding-block-start: var(--s3);
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .spot__visit {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    text-decoration: none;
+    flex: none;
+  }
+
+  .spot__foot .mono {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.16s var(--ease);
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+  "name": "Board",
+  "tagline": "Real-time collaborative whiteboard with sticky notes, shapes, and layer ordering",
+  "description": "A snappy collaborative whiteboard built to replace heavy Miro boards. Supports custom shapes, sticky notes, pencil drawing, multiplayer pointers, and organization workspaces.\n\nVibecoded with Cursor and Liveblocks over a weekend sprint, using Convex for backend reactivity and Clerk for multi-tenant organizations.",
+  "url": "https://miro-clone-next14.vercel.app",
+  "repo": "https://github.com/AntonioErdeljac/next14-miro-clone",
+  "category": "Design",
+  "replaces": [
+    {
+      "product": "Miro",
+      "kind": "clone",
+      "note": "Lightweight sticky-note board with instant multiplayer cursors and infinite undo/redo."
+    }
+  ],
+  "tags": ["miro", "sticky-notes", "liveblocks", "convex", "whiteboard"],
+  "builtWith": ["Cursor", "v0"],
+  "stack": ["Next.js 14", "Liveblocks", "Convex", "Tailwind CSS", "Shadcn UI"],
+  "maker": {
+    "name": "Antonio Erdeljac",
+    "handle": "AntonioErdeljac",
+    "url": "https://github.com/AntonioErdeljac",
+    "avatar": "https://github.com/AntonioErdeljac.png"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2025-11-28",
+  "stars": 1150,
+  "featured": false,
+  "placeholder": false
+}

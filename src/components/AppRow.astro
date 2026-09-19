@@ -1,0 +1,317 @@
+---
+/**
+ * A listing as one line of a printed index.
+ *
+ * Layout is driven by --row-grid (see global.css) so the column headings in
+ * index.astro line up with the cells here. On narrow screens the meta columns
+ * reflow underneath the name using grid-template-areas, so no markup is duplicated.
+ *
+ * The whole row is one link (an overlay hitbox); the only nested interactive
+ * element is the external "visit" target, which is raised above it.
+ */
+import AppTile from './AppTile.astro';
+import Icon from './Icon.astro';
+import { formatDate, hueFor, type AppView } from '../lib/apps';
+
+interface Props {
+  app: AppView;
+  index: number;
+  /**
+   * A one-line explanation of what this app does differently from the product
+   * it replaces. When given, it is shown instead of the "replaces X" label,
+   * which is what you want on a product page, where X is already obvious.
+   */
+  note?: string;
+}
+
+const { app, index, note } = Astro.props;
+
+const search = [
+  app.name,
+  app.tagline,
+  app.category,
+  app.maker.name,
+  app.maker.handle ?? '',
+  app.replacementLabel,
+  ...app.replacements.map((replacement) => replacement.keywords),
+  ...app.tags,
+  ...app.builtWith,
+  ...app.stack,
+]
+  .join(' ')
+  .toLowerCase();
+
+const statusLabel = { live: '', beta: 'Beta', wip: 'WIP', archived: 'Archived' }[app.status];
+const number = String(index + 1).padStart(3, '0');
+---
+
+<article
+  class:list={['row', { 'row--sponsored': app.sponsored }]}
+  style={`--hue: ${hueFor(app.slug)}`}
+  data-app
+  data-slug={app.slug}
+  data-name={app.name}
+  data-category={app.category}
+  data-tools={app.builtWith.join('|')}
+  data-launched={app.launchedAt}
+  data-stars={app.stars ?? 0}
+  data-search={search}
+  data-placeholder={app.placeholder ? 'true' : 'false'}
+>
+  <a class="row__hitbox" href={`/apps/${app.slug}`}>
+    <span class="visually-hidden">{app.name}, {app.tagline}</span>
+  </a>
+
+  <span class="row__num numeric" aria-hidden="true">{number}</span>
+
+  <span class="row__tile">
+    <AppTile name={app.name} initials={app.initials} icon={app.icon} />
+  </span>
+
+  <div class="row__name">
+    <h3 class="row__title">
+      {app.name}
+      <span class="row__badges">
+        {app.sponsored && <span class="badge badge--accent">{app.sponsorLabel}</span>}
+        {app.featured && <span class="badge badge--outline-accent">Featured</span>}
+        {statusLabel && <span class="badge">{statusLabel}</span>}
+        {app.placeholder && <span class="badge">Sample</span>}
+      </span>
+    </h3>
+    <p class="row__sub">
+      <span class="row__tagline">{app.tagline}</span>
+      {
+        note ? (
+          <span class="row__note mono">{note}</span>
+        ) : (
+          <span class="row__replaces mono">
+            {app.isOriginal ? 'original' : `replaces ${app.replacementLabel}`}
+          </span>
+        )
+      }
+    </p>
+  </div>
+
+  <span class="row__cell row__tools mono" title={app.builtWith.join(', ')}>
+    {app.builtWith.join(', ')}
+  </span>
+
+  <span class="row__cell row__date numeric">{formatDate(app.launchedAt)}</span>
+
+  <span class="row__cell row__stars numeric">
+    {app.stars !== undefined && (
+      <>
+        <Icon name="star" size={11} />
+        {app.stars.toLocaleString('en-US')}
+      </>
+    )}
+  </span>
+
+  <a
+    class="row__go"
+    href={app.outbound}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Visit ${app.name} (opens in a new tab)`}
+  >
+    <Icon name="arrow-up-right" size={15} />
+  </a>
+</article>
+
+<style>
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--row-grid);
+    grid-template-areas: 'num tile name tools date stars go';
+    align-items: center;
+    column-gap: var(--s4);
+    row-gap: var(--s2);
+    padding: var(--s4) var(--s3) var(--s4) calc(var(--s3) + 9px);
+    border-block-end: 1px solid var(--rule-soft);
+    transition: background-color 0.14s var(--ease), color 0.14s var(--ease);
+  }
+
+  /* Colour spine: the only place a listing's own colour appears. */
+  .row::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 3px;
+    background: hsl(var(--hue, 20) 68% 46%);
+    opacity: 0.55;
+    transition: opacity 0.14s var(--ease);
+  }
+
+  .row:hover::before,
+  .row:focus-within::before {
+    opacity: 1;
+  }
+
+  .row:hover,
+  .row:focus-within {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .row:hover .row__tagline,
+  .row:hover .row__replaces,
+  .row:hover .row__note,
+  .row:hover .row__cell,
+  .row:focus-within .row__tagline,
+  .row:focus-within .row__replaces,
+  .row:focus-within .row__note,
+  .row:focus-within .row__cell,
+  .row:focus-within .row__num {
+    color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  .row:hover .row__go,
+  .row:focus-within .row__go {
+    color: var(--paper);
+    border-color: color-mix(in oklab, var(--paper) 45%, transparent);
+  }
+
+  .row--sponsored {
+    background: var(--accent-soft);
+  }
+
+  .row__hitbox {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  .row__hitbox:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .row__num {
+    grid-area: num;
+    color: var(--ink-3);
+    font-size: var(--step--2);
+    letter-spacing: 0.06em;
+  }
+
+  .row__tile {
+    grid-area: tile;
+  }
+
+  .row__name {
+    grid-area: name;
+    min-width: 0;
+  }
+
+  .row__title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    font-size: var(--step-1);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.014em;
+  }
+
+  .row__badges {
+    display: inline-flex;
+    gap: var(--s1);
+    align-items: center;
+  }
+
+  .row__sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s1) var(--s3);
+    margin-block-start: 0.15rem;
+    font-size: var(--step--1);
+  }
+
+  .row__tagline {
+    color: var(--ink-2);
+    transition: color 0.14s var(--ease);
+  }
+
+  .row__replaces,
+  .row__note {
+    font-size: var(--step--2);
+    color: var(--ink-3);
+    transition: color 0.14s var(--ease);
+  }
+
+  /* The replacement is the point of the directory, so it gets the accent. */
+  .row__replaces {
+    color: color-mix(in oklab, var(--accent) 78%, var(--ink-3));
+  }
+
+  .row__note {
+    font-style: normal;
+  }
+
+  .row__cell {
+    color: var(--ink-2);
+    font-size: var(--step--2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.14s var(--ease);
+  }
+
+  .row__tools {
+    grid-area: tools;
+  }
+
+  .row__date {
+    grid-area: date;
+    color: var(--ink-3);
+  }
+
+  .row__stars {
+    grid-area: stars;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    color: var(--ink-3);
+    justify-self: end;
+  }
+
+  .row__go {
+    grid-area: go;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    color: var(--ink-2);
+    justify-self: end;
+    transition: color 0.14s var(--ease), border-color 0.14s var(--ease);
+  }
+
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 2.25rem 2.5rem minmax(0, 1fr) 30px;
+      grid-template-areas:
+        'num tile name  go'
+        '.   tile tools tools'
+        '.   .    date  stars';
+      align-items: start;
+      row-gap: var(--s1);
+    }
+
+    /* Badges are nowrap by design, so they stack once the name column is too
+       narrow to hold them side by side. */
+    .row__badges {
+      flex-wrap: wrap;
+    }
+
+    .row__stars {
+      justify-self: end;
+    }
+  }
+</style>

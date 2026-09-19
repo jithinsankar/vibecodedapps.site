@@ -1,0 +1,125 @@
+name: Submit an app
+description: Add a vibecoded app to the directory. A maintainer will turn this into a listing file.
+title: '[App] '
+labels: ['submission']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for adding something to the directory. Only the first four fields are really required:
+        a maintainer will fill in the rest and open the pull request for you.
+
+  - type: input
+    id: name
+    attributes:
+      label: App name
+      placeholder: Orbit Notes
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Live URL
+      description: The product itself, not a landing page for something unbuilt. Must load without a login.
+      placeholder: https://orbitnotes.app
+    validations:
+      required: true
+
+  - type: input
+    id: tagline
+    attributes:
+      label: Tagline
+      description: One sentence describing what it does. Sentence case, no trailing full stop.
+      placeholder: Notes that link themselves as you write
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Section
+      options:
+        - 'AI & Agents'
+        - 'Developer Tools'
+        - 'Design'
+        - 'Productivity'
+        - 'Marketing'
+        - 'Finance'
+        - 'Health'
+        - 'Education'
+        - 'Games'
+        - 'Fun & Toys'
+        - 'Community'
+        - 'Utilities'
+        - 'Open Source'
+    validations:
+      required: true
+
+  - type: input
+    id: built_with
+    attributes:
+      label: Vibecoded with
+      description: The AI tools you actually used. Comma separated.
+      placeholder: Claude Code, Cursor
+    validations:
+      required: true
+
+  - type: input
+    id: maker
+    attributes:
+      label: Maker
+      description: Your name, plus a handle or profile URL if you have one.
+      placeholder: Alma Vos (@almavos)
+    validations:
+      required: true
+
+  - type: input
+    id: launched
+    attributes:
+      label: Launched
+      description: When it became publicly usable, as YYYY-MM-DD.
+      placeholder: '2026-06-28'
+    validations:
+      required: true
+
+  - type: input
+    id: repo
+    attributes:
+      label: Repository
+      description: Optional. Required if the app is open source.
+      placeholder: https://github.com/you/orbit-notes
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A couple of paragraphs. What it does, what surprised you, what is next.
+      placeholder: |
+        Orbit Notes watches what you write and offers to link phrases you have used before...
+
+        Built in a week with Claude Code, mostly arguing about the indexer.
+    validations:
+      required: false
+
+  - type: input
+    id: pricing
+    attributes:
+      label: Pricing
+      placeholder: free / freemium / paid / open-source
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: The app is live and usable by a stranger.
+          required: true
+        - label: I built it, or the maker is fine with it being listed.
+          required: true
+        - label: I have read the contributing guidelines.
+          required: true
