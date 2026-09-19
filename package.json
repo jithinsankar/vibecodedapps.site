@@ -6,7 +6,7 @@
   "license": "MIT",
   "description": "An open-source, git-backed directory of vibecoded apps.",
   "engines": {
-    "node": "22.x"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "astro dev",
