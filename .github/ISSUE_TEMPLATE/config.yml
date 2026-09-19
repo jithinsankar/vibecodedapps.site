@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: How the directory works
-    url: https://vibecodedapps.site/about
+    url: https://vibecodedapps.vercel.app/about
     about: What gets listed, how the data is stored, and how sponsorship works.
   - name: Sponsorship enquiry
-    url: https://vibecodedapps.site/sponsor
+    url: https://vibecodedapps.vercel.app/sponsor
     about: Paid placements, labelled and time-boxed, never a ranking shortcut.

@@ -88,7 +88,7 @@ function buildSvg({ apps, products, covered }) {
         )}</text>
 
   <text x="1116" y="552" text-anchor="end" font-family="Consolas, 'DejaVu Sans Mono', monospace"
-        font-size="19" fill="#726c5c" letter-spacing="2.4">VIBECODEDAPPS.SITE</text>
+        font-size="19" fill="#726c5c" letter-spacing="2.4">VIBECODEDAPPS.VERCEL.APP</text>
 </svg>`;
 }
 

@@ -7,8 +7,8 @@
 
 export const SITE = {
   name: 'Vibecoded',
-  domain: 'vibecodedapps.site',
-  url: 'https://vibecodedapps.site',
+  domain: 'vibecodedapps.vercel.app',
+  url: 'https://vibecodedapps.vercel.app',
   title: 'Vibecoded: is there a vibecoded clone of it?',
   description:
     'An open-source directory of apps built with AI coding tools, organised by the product each one replaces. Every answer has a page.',

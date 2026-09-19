@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vibecodedapps.site/sitemap-index.xml
+Sitemap: https://vibecodedapps.vercel.app/sitemap-index.xml

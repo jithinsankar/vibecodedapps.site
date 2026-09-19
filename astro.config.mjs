@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // The canonical URL of the deployed site. Used for canonical tags, sitemap and RSS.
-export const SITE_URL = 'https://vibecodedapps.site';
+export const SITE_URL = 'https://vibecodedapps.vercel.app';
 
 export default defineConfig({
   site: SITE_URL,
