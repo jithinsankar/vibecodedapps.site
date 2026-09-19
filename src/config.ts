@@ -18,9 +18,10 @@ export const SITE = {
 
   /**
    * The GitHub repo that holds this site *and* its listings.
-   * Change this to your own org/repo. Submit links are generated from it.
+   * Submit links, edit links and the footer source link are all generated from
+   * it, so it has to name the real repo.
    */
-  repo: 'https://github.com/vibecoded-apps/directory',
+  repo: 'https://github.com/jithinsankar/vibecodedapps.site',
 
   email: 'hello@vibecodedapps.site',
 
