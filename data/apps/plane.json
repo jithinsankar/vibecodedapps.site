@@ -17,9 +17,24 @@
       "note": "Cleans up Jira's configuration bloat with instant keyboard shortcuts and fast sprint boards."
     }
   ],
-  "tags": ["jira", "issue-tracker", "sprint", "kanban", "agile"],
-  "builtWith": ["Cursor", "Devin"],
-  "stack": ["Next.js", "Django", "TypeScript", "PostgreSQL", "Redis"],
+  "tags": [
+    "jira",
+    "issue-tracker",
+    "sprint",
+    "kanban",
+    "agile"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Devin"
+  ],
+  "stack": [
+    "Next.js",
+    "Django",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis"
+  ],
   "maker": {
     "name": "Vihar Kurama",
     "handle": "vihar",
@@ -29,7 +44,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-08-20",
-  "stars": 32100,
+  "stars": 59698,
   "featured": true,
   "placeholder": false
 }

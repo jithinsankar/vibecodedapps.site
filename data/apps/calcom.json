@@ -17,9 +17,24 @@
       "note": "Eliminates back-and-forth email scheduling with personal booking links and team availability slots."
     }
   ],
-  "tags": ["calendar", "scheduling", "appointments", "meetings", "open-source"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js", "Prisma", "PostgreSQL", "Tailwind CSS", "tRPC"],
+  "tags": [
+    "calendar",
+    "scheduling",
+    "appointments",
+    "meetings",
+    "open-source"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js",
+    "Prisma",
+    "PostgreSQL",
+    "Tailwind CSS",
+    "tRPC"
+  ],
   "maker": {
     "name": "Peer Richelsen",
     "handle": "peerpipe",
@@ -29,7 +44,7 @@
   "status": "live",
   "pricing": "freemium",
   "launchedAt": "2025-07-14",
-  "stars": 33800,
+  "stars": 48587,
   "featured": true,
   "placeholder": false
 }

@@ -12,9 +12,24 @@
       "note": "Multiplayer design canvas and vector manipulation with zero seat costs."
     }
   ],
-  "tags": ["figma", "canvas", "multiplayer", "liveblocks", "vector"],
-  "builtWith": ["Cursor", "v0"],
-  "stack": ["Next.js", "Fabric.js", "Liveblocks", "TypeScript", "Tailwind CSS"],
+  "tags": [
+    "figma",
+    "canvas",
+    "multiplayer",
+    "liveblocks",
+    "vector"
+  ],
+  "builtWith": [
+    "Cursor",
+    "v0"
+  ],
+  "stack": [
+    "Next.js",
+    "Fabric.js",
+    "Liveblocks",
+    "TypeScript",
+    "Tailwind CSS"
+  ],
   "maker": {
     "name": "Adrian Hajdin",
     "handle": "adrianhajdin",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-10-22",
-  "stars": 2310,
+  "stars": 0,
   "featured": true,
   "placeholder": false
 }

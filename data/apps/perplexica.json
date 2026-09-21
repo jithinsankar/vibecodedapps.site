@@ -12,9 +12,24 @@
       "note": "Conversational search with real-time web citations without a $20/month Perplexity Pro subscription."
     }
   ],
-  "tags": ["perplexity", "ai-search", "rag", "searxng", "llm"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js", "SearXNG", "TypeScript", "Tailwind CSS", "Ollama"],
+  "tags": [
+    "perplexity",
+    "ai-search",
+    "rag",
+    "searxng",
+    "llm"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js",
+    "SearXNG",
+    "TypeScript",
+    "Tailwind CSS",
+    "Ollama"
+  ],
   "maker": {
     "name": "Nabil Baig",
     "handle": "ItzCrazyKns",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-04-20",
-  "stars": 21500,
+  "stars": 36890,
   "featured": true,
   "placeholder": false
 }

@@ -12,9 +12,23 @@
       "note": "Instant layer-based photo editing without Adobe Creative Cloud bloat or subscription fees."
     }
   ],
-  "tags": ["photoshop", "image-editor", "layers", "design", "lightweight"],
-  "builtWith": ["GPT-6 Astra", "Claude Code"],
-  "stack": ["TypeScript", "Canvas", "WebGL", "Tauri"],
+  "tags": [
+    "photoshop",
+    "image-editor",
+    "layers",
+    "design",
+    "lightweight"
+  ],
+  "builtWith": [
+    "GPT-6 Astra",
+    "Claude Code"
+  ],
+  "stack": [
+    "TypeScript",
+    "Canvas",
+    "WebGL",
+    "Tauri"
+  ],
   "maker": {
     "name": "Robbie Tilton",
     "handle": "robbietilton",
@@ -24,7 +38,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2026-09-01",
-  "stars": 1850,
+  "stars": 4053,
   "featured": true,
   "placeholder": false
 }

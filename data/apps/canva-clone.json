@@ -12,9 +12,24 @@
       "note": "Drag-and-drop graphic creation and AI background tools without Canva Pro export restrictions."
     }
   ],
-  "tags": ["canva", "graphic-design", "fabricjs", "canvas", "ai"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js 14", "Fabric.js", "Hono", "Drizzle ORM", "Neon Postgres"],
+  "tags": [
+    "canva",
+    "graphic-design",
+    "fabricjs",
+    "canvas",
+    "ai"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js 14",
+    "Fabric.js",
+    "Hono",
+    "Drizzle ORM",
+    "Neon Postgres"
+  ],
   "maker": {
     "name": "Alimardon Davronov",
     "handle": "Davronov-Alimardon",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-10-08",
-  "stars": 1180,
+  "stars": 528,
   "featured": true,
   "placeholder": false
 }

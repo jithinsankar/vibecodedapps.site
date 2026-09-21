@@ -12,9 +12,24 @@
       "note": "Gamified language learning mechanics without aggressive monetization or ads."
     }
   ],
-  "tags": ["duolingo", "gamification", "languages", "education", "sound-effects"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js 14", "Drizzle ORM", "Neon Postgres", "Tailwind CSS", "Clerk"],
+  "tags": [
+    "duolingo",
+    "gamification",
+    "languages",
+    "education",
+    "sound-effects"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js 14",
+    "Drizzle ORM",
+    "Neon Postgres",
+    "Tailwind CSS",
+    "Clerk"
+  ],
   "maker": {
     "name": "Antonio Erdeljac",
     "handle": "AntonioErdeljac",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-12-05",
-  "stars": 1420,
+  "stars": 33,
   "featured": true,
   "placeholder": false
 }

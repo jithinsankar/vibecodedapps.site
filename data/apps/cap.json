@@ -12,9 +12,23 @@
       "note": "Instant screen recordings and video shares without Loom's 5-minute limit or per-user monthly bills."
     }
   ],
-  "tags": ["loom", "screen-recording", "video", "webrtc", "open-source"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js", "Rust", "Tauri", "Tailwind CSS"],
+  "tags": [
+    "loom",
+    "screen-recording",
+    "video",
+    "webrtc",
+    "open-source"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js",
+    "Rust",
+    "Tauri",
+    "Tailwind CSS"
+  ],
   "maker": {
     "name": "Richard North",
     "handle": "richardcap",
@@ -24,7 +38,7 @@
   "status": "live",
   "pricing": "freemium",
   "launchedAt": "2025-06-12",
-  "stars": 9200,
+  "stars": 22588,
   "featured": true,
   "placeholder": false
 }

@@ -12,19 +12,34 @@
       "note": "Send large gigabyte files with expiring links directly from your own storage without bandwidth caps."
     }
   ],
-  "tags": ["wetransfer", "file-sharing", "self-hosted", "expiring-links", "privacy"],
-  "builtWith": ["Bolt.new", "Claude Code"],
-  "stack": ["Next.js", "NestJS", "Prisma", "Tailwind CSS", "Docker"],
+  "tags": [
+    "wetransfer",
+    "file-sharing",
+    "self-hosted",
+    "expiring-links",
+    "privacy"
+  ],
+  "builtWith": [
+    "Bolt.new",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js",
+    "NestJS",
+    "Prisma",
+    "Tailwind CSS",
+    "Docker"
+  ],
   "maker": {
     "name": "Eli Rykov",
     "handle": "stonith404",
     "url": "https://github.com/stonith404",
     "avatar": "https://github.com/stonith404.png"
   },
-  "status": "live",
+  "status": "archived",
   "pricing": "open-source",
   "launchedAt": "2025-09-02",
-  "stars": 7900,
+  "stars": 4670,
   "featured": true,
   "placeholder": false
 }

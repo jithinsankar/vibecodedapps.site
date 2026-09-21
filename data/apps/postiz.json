@@ -12,9 +12,24 @@
       "note": "Uncapped multi-channel social scheduling with automated AI agent copy refinement."
     }
   ],
-  "tags": ["buffer", "social-media", "scheduler", "automation", "marketing"],
-  "builtWith": ["Cursor", "Claude Code"],
-  "stack": ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Redis"],
+  "tags": [
+    "buffer",
+    "social-media",
+    "scheduler",
+    "automation",
+    "marketing"
+  ],
+  "builtWith": [
+    "Cursor",
+    "Claude Code"
+  ],
+  "stack": [
+    "Next.js",
+    "NestJS",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis"
+  ],
   "maker": {
     "name": "Nevo David",
     "handle": "nevodavid",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-11-04",
-  "stars": 19400,
+  "stars": 36127,
   "featured": true,
   "placeholder": false
 }

@@ -12,9 +12,24 @@
       "note": "Lightweight sticky-note board with instant multiplayer cursors and infinite undo/redo."
     }
   ],
-  "tags": ["miro", "sticky-notes", "liveblocks", "convex", "whiteboard"],
-  "builtWith": ["Cursor", "v0"],
-  "stack": ["Next.js 14", "Liveblocks", "Convex", "Tailwind CSS", "Shadcn UI"],
+  "tags": [
+    "miro",
+    "sticky-notes",
+    "liveblocks",
+    "convex",
+    "whiteboard"
+  ],
+  "builtWith": [
+    "Cursor",
+    "v0"
+  ],
+  "stack": [
+    "Next.js 14",
+    "Liveblocks",
+    "Convex",
+    "Tailwind CSS",
+    "Shadcn UI"
+  ],
   "maker": {
     "name": "Antonio Erdeljac",
     "handle": "AntonioErdeljac",
@@ -24,7 +39,7 @@
   "status": "live",
   "pricing": "open-source",
   "launchedAt": "2025-11-28",
-  "stars": 1150,
+  "stars": 16,
   "featured": false,
   "placeholder": false
 }
