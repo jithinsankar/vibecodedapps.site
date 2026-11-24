@@ -1,0 +1,26 @@
+{
+  "name": "Vertov",
+  "tagline": "Browser screen recording with transcript editing and share links",
+  "description": "Record a screen, microphone or camera in the browser. Edit the recording by deleting words from the transcript, then send a link viewers can open without a Vertov account. The AGPL-3.0 recorder can be self-hosted. The hosted service adds a shared video library and an OAuth connection for AI agents.",
+  "url": "https://vertov.app/",
+  "repo": "https://github.com/ankurmans/vertov-screen-recorder",
+  "category": "Media",
+  "replaces": [
+    {
+      "product": "Loom",
+      "kind": "alternative",
+      "note": "Edit recordings by transcript and share a workspace library under one price, with no per-seat fees."
+    }
+  ],
+  "tags": ["loom", "screen-recording", "video", "transcript-editing", "open-source"],
+  "builtWith": ["Codex"],
+  "stack": ["TypeScript", "React", "Cloudflare Workers"],
+  "maker": {
+    "name": "Ankur Shrestha",
+    "handle": "ankurmans",
+    "url": "https://github.com/ankurmans"
+  },
+  "status": "live",
+  "pricing": "open-source",
+  "launchedAt": "2026-11-21"
+}
